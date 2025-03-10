@@ -1,0 +1,47 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc</FILE>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\M328PDEF.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\Debug\Proyecto1.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Proyecto1.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Proyecto1.map</FILE>
+  <FILE>Proyecto1.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <START><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>32</LINE></START>
+  <ISR_PCINT1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>215</LINE></ISR_PCINT1>
+  <TMR0><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>232</LINE></TMR0>
+  <TABLA7SEG><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>29</LINE></TABLA7SEG>
+  <INIT_TMR0><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>206</LINE></INIT_TMR0>
+  <LOOP><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>102</LINE></LOOP>
+  <RELOJ><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>141</LINE></RELOJ>
+  <CONHORA><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>115</LINE></CONHORA>
+  <D1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>171</LINE></D1>
+  <D2><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>182</LINE></D2>
+  <D3><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>193</LINE></D3>
+  <D4><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>161</LINE></D4>
+  <REIN><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>225</LINE></REIN>
+  <REINICIO><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>273</LINE></REINICIO>
+  <UNIMINUTOS><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>240</LINE></UNIMINUTOS>
+  <MINUTOS><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>247</LINE></MINUTOS>
+  <RES><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>253</LINE></RES>
+  <HORAS><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>259</LINE></HORAS>
+  <DECHORAS><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>265</LINE></DECHORAS>
+  <FINALH><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>271</LINE></FINALH>
+ </LABELS>
+</ASSEMBLER_INFO>
