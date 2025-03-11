@@ -60,13 +60,13 @@ START:
     LDI   r16, 0b11111111
     OUT   PORTB, r16
 	
-    ; Habilitar interrupciones para PC0 y PC1 (corresponden a PCINT8 y PCINT9)
-    LDI    R16, 0b00000011//(1<<PCINT8) | (1<<PCINT9)
-    STS    PCMSK1, R16
 ; Configurar interrupciones por cambio para PORTC
     ; Habilitar interrupción por cambio para el grupo de PORTC (PCIE1 en PCICR)
     LDI    R16, 0b00000010//(1<<PCIE1)
     STS    PCICR, R16
+    ; Habilitar interrupciones para PC0 y PC1 (corresponden a PCINT8 y PCINT9)
+    LDI    R16, 0b00000011//(1<<PCINT8) | (1<<PCINT9)
+    STS    PCMSK1, R16
 
 	LDI		R16, 0B00000000
 	OUT		DDRC, R16
@@ -92,6 +92,8 @@ START:
     MOV		R6, R16
 	MOV		R8, R16
 	MOV		R9, R16
+	LDI		R16, 0XFF
+	MOV		R1, R16
     LDI		r22, 0
     ; Condición de multiplexado en r23
     LDI		r23, 0
@@ -101,7 +103,7 @@ START:
 
 LOOP:
 	CPI		R28, 0X00
-	BREQ	RELOJ
+	BREQ	RELOJ1
 	;CPI		R28, 0X01
 	;BREQ	FECHA
 	CPI		R28, 0X02
@@ -111,22 +113,81 @@ LOOP:
 	;CPI		R28, 0X04
 	;BREQ	ALARMA
 	RJMP	LOOP
-
+RELOJ1:
+	RJMP	RELOJ
 CONHORA:
-	IN		R29, PINC
-	SBRS	R29, 1
-	INC		R3
-	SBRS	R29, 2
-	INC		R4
-
 	SBRS	R27, 0
 	INC		R23
+	ANDI	R23, 0X03
+
+	IN		R29, PINC
+	CP		R29, R1
+	BREQ	COMPROBAR
+
+	SBRS	R27, 5
+	RJMP	COMPROBAR
+
+	IN		R29, PINC
+	CP		R29, R1
+	BREQ	COMPROBAR
+	MOV		R1, R29
+
+	SBRS	R29, 1
+	INC		R6
+	SBRS	R29, 2
+	INC		R5
+	SBRS	R29, 3
+	INC		R4
+	SBRS	R29, 4
+	INC		R3
+
 
 	LDI		R22, 0X00
 	OUT		PORTB, R22
+	LDI		R16, 0X03
+	CP		R6, R16
+	BREQ	REG6
+;HORAS DECENAS
+	LDI		R16, 0X02
+	CP		R6, R16
+	BREQ	CON24HORAS
+;HORAS UNIDADES
+	LDI		R16, 0X0A
+	CP		R5, R16
+	BREQ	LR5
+;MINUTOS DECENAS
+MINDECENAS:
+	LDI		R16, 0X06
+	CP		R4, R16
+	BREQ	LR4
+;MINUTOS UNIDADES
+	LDI		R16, 0X0A
+	CP		R3, R16
+	BREQ	LR3
+	RJMP	COMPROBAR
+LR3:
+	CLR		R3
+	INC		R4
+	RJMP	COMPROBAR
+LR4:
+	CLR		R4
+	INC		R5
+	RJMP	COMPROBAR	
+LR5:
+	CLR		R5
+	INC		R6
+	RJMP	COMPROBAR
+CON24HORAS:
+	LDI		R16, 0X05
+	CP		R5, R16
+	BRLO	MINDECENAS
+	CLR		R3
+	CLR		R4
+	CLR		R5
+REG6:
+	CLR		R6
 
-	ANDI	R23, 0X03
-
+COMPROBAR:
     CPI		R23, 0X00
 	BREQ	D1
 	CPI		R23, 0X01
@@ -142,11 +203,10 @@ RELOJ:
 	IN		R27, TCNT0
 	SBRS	R27, 0
 	INC		R23
+	ANDI	R23, 0X03
 	
 	LDI		R22, 0X00
 	OUT		PORTB, R22
-
-	ANDI	R23, 0X03
 
     CPI		R23, 0X00
 	BREQ	D1
@@ -157,7 +217,6 @@ RELOJ:
 	CPI		R23, 0X03
 	BREQ	D4
 	RJMP	LOOP
-
 D4:
 	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
 	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
@@ -213,8 +272,6 @@ INIT_TMR0:
 
 ; ISR: Interrupción por cambio en PORTC
 ISR_PCINT1:
-	; Inicializar Timer0
-    CALL	INIT_TMR0
     IN		R29, PINC       ; Leer el estado actual de PORTC
     ; Si PC0 está en 0, incrementa el contador
     SBRS	R29, 0          ; Si el bit0 está alto, salta la siguiente instrucción
@@ -259,16 +316,23 @@ RES:
 HORAS:
 	CLR		R4
 	INC		R5
+	LDI		R16, 0X03
+	CP		R6, R16
+	BREQ	L24HORAS
+		
 	LDI		R16, 0X0A
 	CP		R5, R16
 	BRLO	REINICIO
-DECHORAS:
+
 	CLR		R5
 	INC		R6
-	LDI		R16, 0X03
-	CP		R6, R16
+	RJMP	REINICIO
+L24HORAS:
+	LDI		R16, 0X05
+	CP		R5, R16
 	BRLO	REINICIO
-FINALH:
+
+	CLR		R5
 	CLR		R6
 REINICIO:
 	RETI
