@@ -92,6 +92,10 @@ START:
     MOV		R6, R16
 	MOV		R8, R16
 	MOV		R9, R16
+	MOV		R10, R16
+	MOV		R11, R16
+	MOV		R12, R16
+	MOV		R13, R16
 	LDI		R16, 0XFF
 	MOV		R1, R16
     LDI		r22, 0
@@ -108,11 +112,13 @@ LOOP:
 	;BREQ	FECHA
 	CPI		R28, 0X02
 	BREQ	CONHORA
-	CPI		R28, 0X03
+	;CPI		R28, 0X03
 	;BREQ	CONFECHA
-	;CPI		R28, 0X04
-	;BREQ	ALARMA
+	CPI		R28, 0X04
+	BREQ	ALARMA1
 	RJMP	LOOP
+ALARMA1:
+	RJMP	ALARMA
 RELOJ1:
 	RJMP	RELOJ
 CONHORA:
@@ -198,7 +204,6 @@ COMPROBAR:
 	BREQ	D4
 	RJMP	LOOP
 
-
 RELOJ:	
 	IN		R27, TCNT0
 	SBRS	R27, 0
@@ -260,6 +265,146 @@ D3:
 	LDI		R22, 0X04
 	OUT		PORTB, R22
     RJMP LOOP
+
+ALARMA:
+	
+	SBRS	R27, 0
+	INC		R23
+	ANDI	R23, 0X03
+	
+	CP		R3, R10
+	BRNE	SEGUIR
+	CP		R4, R11
+	BRNE	SEGUIR
+	CP		R5, R12
+	BRNE	SEGUIR
+	CP		R6, R13
+	BRNE	SEGUIR
+	SBI		PORTD, 7
+SEGUIR:
+	CBI		PORTD, 7
+	IN		R29, PINC
+	CP		R29, R1
+	BREQ	COMPROBAR2
+
+	SBRS	R27, 5
+	RJMP	COMPROBAR2
+
+	IN		R29, PINC
+	CP		R29, R1
+	BREQ	COMPROBAR2
+	MOV		R1, R29
+
+	SBRS	R29, 1
+	INC		R13
+	SBRS	R29, 2
+	INC		R12
+	SBRS	R29, 3
+	INC		R11
+	SBRS	R29, 4
+	INC		R10
+
+
+	LDI		R22, 0X00
+	OUT		PORTB, R22
+	LDI		R16, 0X03
+	CP		R13, R16
+	BREQ	REG13
+;HORAS DECENAS
+	LDI		R16, 0X02
+	CP		R13, R16
+	BREQ	CON24HORASA
+;HORAS UNIDADES
+	LDI		R16, 0X0A
+	CP		R12, R16
+	BREQ	LR12
+;MINUTOS DECENAS
+MINDECENASA:
+	LDI		R16, 0X06
+	CP		R11, R16
+	BREQ	LR11
+;MINUTOS UNIDADES
+	LDI		R16, 0X0A
+	CP		R10, R16
+	BREQ	LR10
+	RJMP	COMPROBAR2
+LR10:
+	CLR		R10
+	INC		R11
+	RJMP	COMPROBAR2
+LR11:
+	CLR		R11
+	INC		R12
+	RJMP	COMPROBAR2	
+LR12:
+	CLR		R12
+	INC		R13
+	RJMP	COMPROBAR2
+CON24HORASA:
+	LDI		R16, 0X05
+	CP		R12, R16
+	BRLO	MINDECENASA
+	CLR		R10
+	CLR		R11
+	CLR		R12
+REG13:
+	CLR		R13
+	RJMP	COMPROBAR2
+
+COMPROBAR2:
+	CPI		R23, 0X00
+	BREQ	DA1
+	CPI		R23, 0X01
+	BREQ	DA2
+	CPI		R23, 0X02
+	BREQ	DA3
+	CPI		R23, 0X03
+	BREQ	DA4
+	RJMP	LOOP
+
+DA1:
+	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+	
+	; Sumar el desplazamiento según el dígito a mostrar:
+	ADD		R30, R10              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	LPM		R24, Z
+	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X01
+	LDI		R22, 0X01
+	OUT		PORTB, R22
+	RJMP LOOP
+DA2:
+	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+	
+	; Sumar el desplazamiento según el dígito a mostrar:
+	ADD		R30, R11              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	LPM		R24, Z
+	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo
+	LDI		R22, 0X02
+	OUT		PORTB, R22
+	RJMP LOOP
+DA3:
+    LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+	
+	; Sumar el desplazamiento según el dígito a mostrar:
+	ADD		R30, R12             ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	LPM		R24, Z
+	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04
+	LDI		R22, 0X04
+	OUT		PORTB, R22
+    RJMP LOOP
+DA4:
+	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+	; Sumar el desplazamiento según el dígito a mostrar:
+	ADD		R30, R13              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	LPM		R24, Z
+	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X08
+	LDI		R22, 0x08
+	OUT		PORTB, R22
+	RJMP	LOOP
 
 ;Subrutina para inicializar Timer0
 INIT_TMR0:
