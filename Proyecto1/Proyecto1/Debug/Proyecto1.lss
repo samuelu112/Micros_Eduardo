@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm Tue Mar 11 12:16:54 2025
+AVRASM ver. 2.2.8  C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm Wed Mar 12 18:50:02 2025
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
 C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm(11): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\M328PDEF.inc'
@@ -1050,11 +1050,11 @@ C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyect
                                  
                                  ; Vector de interrupción por cambio en PORTC (para los pulsadores)
                                  .org 0x0008
-000008 c218                          RJMP ISR_PCINT1
+000008 c217                          RJMP ISR_PCINT1
                                  
                                  ; Vector de interrupción de Timer0 Overflow (ATmega328P: 0x0020)
                                  .org 0x0020
-000020 c208                          RJMP TMR0
+000020 c221                          RJMP TMR0
                                  
                                  .ORG 0X0100
 000100 063f
@@ -1079,7 +1079,7 @@ C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyect
 00010d e001                      	LDI		R16, (1<<TOV0)
 00010e 9300 0015                 	STS		TIFR0, R16
                                  	; Inicializar Timer0
-000110 940e 021c                     CALL	INIT_TMR0
+000110 940e 021b                     CALL	INIT_TMR0
                                      ; Configurar reloj: F_CPU = 1 MHz
 000112 e800                          LDI   r16, (1<<CLKPCE)
 000113 9300 0061                     STS   CLKPR, r16
@@ -1100,7 +1100,7 @@ C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyect
 00011c e002                          LDI    R16, 0b00000010//(1<<PCIE1)
 00011d 9300 0068                     STS    PCICR, R16
                                      ; Habilitar interrupciones para PC0 y PC1 (corresponden a PCINT8 y PCINT9)
-00011f e003                          LDI    R16, 0b00000011//(1<<PCINT8) | (1<<PCINT9)
+00011f e10f                          LDI    R16, (1<<PCINT8) | (1<<PCINT9) | (1<<PCINT10) |(1<<PCINT11)|(1<<PCINT12)
 000120 9300 006c                     STS    PCMSK1, R16
                                  
 000122 e000                      	LDI		R16, 0B00000000
@@ -1153,367 +1153,396 @@ C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyect
 000140 f009                      	BREQ	ALARMA1
 000141 cff9                      	RJMP	LOOP
                                  ALARMA1:
-000142 c06f                      	RJMP	ALARMA
+000142 c07f                      	RJMP	ALARMA
                                  RELOJ1:
-000143 c03f                      	RJMP	RELOJ
+000143 c04f                      	RJMP	RELOJ
                                  CONHORA:
 000144 ffb0                      	SBRS	R27, 0
 000145 9573                      	INC		R23
 000146 7073                      	ANDI	R23, 0X03
                                  
-000147 b1d6                      	IN		R29, PINC
-000148 15d1                      	CP		R29, R1
-000149 f181                      	BREQ	COMPROBAR
+000147 e060                      	LDI		R22, 0X00
+000148 b965                      	OUT		PORTB, R22
                                  
-00014a ffb5                      	SBRS	R27, 5
-00014b c02e                      	RJMP	COMPROBAR
+000149 ef0f                      	LDI		R16, 0XFF ;UNDERFLOW MINUTOS
+00014a 1630                      	CP		R3, R16
+00014b f081                      	BREQ	MIN59
                                  
-00014c b1d6                      	IN		R29, PINC
-00014d 15d1                      	CP		R29, R1
-00014e f159                      	BREQ	COMPROBAR
-00014f 2e1d                      	MOV		R1, R29
+00014c ef0f                      	LDI		R16, 0XFF
+00014d 1650                      	CP		R5, R16
+00014e f0e9                      	BREQ	HOR24
                                  
-000150 ffd1                      	SBRS	R29, 1
-000151 9463                      	INC		R6
-000152 ffd2                      	SBRS	R29, 2
-000153 9453                      	INC		R5
-000154 ffd3                      	SBRS	R29, 3
-000155 9443                      	INC		R4
-000156 ffd4                      	SBRS	R29, 4
-000157 9433                      	INC		R3
-                                 
-                                 
-000158 e060                      	LDI		R22, 0X00
-000159 b965                      	OUT		PORTB, R22
-00015a e003                      	LDI		R16, 0X03
-00015b 1660                      	CP		R6, R16
-00015c f0e1                      	BREQ	REG6
                                  ;HORAS DECENAS
-00015d e002                      	LDI		R16, 0X02
-00015e 1660                      	CP		R6, R16
-00015f f099                      	BREQ	CON24HORAS
+00014f e002                      	LDI		R16, 0X02
+000150 1660                      	CP		R6, R16
+000151 f199                      	BREQ	CON24HORAS
                                  ;HORAS UNIDADES
-000160 e00a                      	LDI		R16, 0X0A
-000161 1650                      	CP		R5, R16
-000162 f069                      	BREQ	LR5
+000152 e00a                      	LDI		R16, 0X0A
+000153 1650                      	CP		R5, R16
+000154 f169                      	BREQ	LR5
                                  ;MINUTOS DECENAS
                                  MINDECENAS:
-000163 e006                      	LDI		R16, 0X06
-000164 1640                      	CP		R4, R16
-000165 f039                      	BREQ	LR4
+000155 e006                      	LDI		R16, 0X06
+000156 1640                      	CP		R4, R16
+000157 f139                      	BREQ	LR4
                                  ;MINUTOS UNIDADES
-000166 e00a                      	LDI		R16, 0X0A
-000167 1630                      	CP		R3, R16
-000168 f009                      	BREQ	LR3
-000169 c010                      	RJMP	COMPROBAR
-                                 LR3:
-00016a 2433                      	CLR		R3
-00016b 9443                      	INC		R4
-00016c c00d                      	RJMP	COMPROBAR
-                                 LR4:
-00016d 2444                      	CLR		R4
-00016e 9453                      	INC		R5
-00016f c00a                      	RJMP	COMPROBAR	
-                                 LR5:
-000170 2455                      	CLR		R5
-000171 9463                      	INC		R6
-000172 c007                      	RJMP	COMPROBAR
-                                 CON24HORAS:
-000173 e005                      	LDI		R16, 0X05
+000158 e00a                      	LDI		R16, 0X0A
+000159 1630                      	CP		R3, R16
+00015a f109                      	BREQ	LR3
+00015b c02e                      	RJMP	COMPROBAR
+                                 MIN59:
+00015c e000                      	LDI		R16, 0X00
+00015d 1640                      	CP		R4, R16
+00015e f021                      	BREQ	MINMAX
+00015f 944a                      	DEC		R4
+000160 e009                      	LDI		R16, 0X09
+000161 2e30                      	MOV		R3, R16
+000162 c027                      	RJMP	COMPROBAR
+                                 MINMAX:
+000163 ef0f                      	LDI		R16, 0XFF
+000164 1630                      	CP		R3, R16
+000165 f009                      	BREQ	PONER59
+000166 c023                      	RJMP	COMPROBAR
+                                 PONER59:
+000167 e005                      	LDI		R16, 0X05
+000168 2e40                      	MOV		R4, R16
+000169 e009                      	LDI		R16, 0X09
+00016a 2e30                      	MOV		R3, R16
+00016b c01e                      	RJMP	COMPROBAR
+                                 
+                                 HOR24:
+00016c e000                      	LDI		R16, 0X00
+00016d 1660                      	CP		R6, R16
+00016e f021                      	BREQ	PONER24
+00016f 946a                      	DEC		R6
+000170 e009                      	LDI		R16, 0X09
+000171 2e50                      	MOV		R5, R16
+000172 c017                      	RJMP	COMPROBAR
+                                 PONER24:
+000173 ef0f                      	LDI		R16, 0XFF
 000174 1650                      	CP		R5, R16
-000175 f368                      	BRLO	MINDECENAS
-000176 2433                      	CLR		R3
-000177 2444                      	CLR		R4
-000178 2455                      	CLR		R5
+000175 f009                      	BREQ	PONER23
+000176 c013                      	RJMP	COMPROBAR
+                                 PONER23:
+000177 e002                      	LDI		R16, 0X02
+000178 2e60                      	MOV		R6, R16
+000179 e003                      	LDI		R16, 0X03
+00017a 2e50                      	MOV		R5, R16
+00017b c00e                      	RJMP	COMPROBAR
+                                 LR3:
+00017c 2433                      	CLR		R3
+00017d 9443                      	INC		R4
+00017e c00b                      	RJMP	COMPROBAR
+                                 LR4:
+00017f 2444                      	CLR		R4
+000180 2433                      	CLR		R3
+000181 c008                      	RJMP	COMPROBAR	
+                                 LR5:
+000182 2455                      	CLR		R5
+000183 9463                      	INC		R6
+000184 c005                      	RJMP	COMPROBAR
+                                 CON24HORAS:
+000185 e004                      	LDI		R16, 0X04
+000186 1650                      	CP		R5, R16
+000187 f268                      	BRLO	MINDECENAS
+000188 2455                      	CLR		R5
                                  REG6:
-000179 2466                      	CLR		R6
+000189 2466                      	CLR		R6
                                  
                                  COMPROBAR:
-00017a 3070                          CPI		R23, 0X00
-00017b f0f1                      	BREQ	D1
-00017c 3071                      	CPI		R23, 0X01
-00017d f121                      	BREQ	D2
-00017e 3072                      	CPI		R23, 0X02
-00017f f151                      	BREQ	D3
-000180 3073                      	CPI		R23, 0X03
-000181 f081                      	BREQ	D4
-000182 cfb8                      	RJMP	LOOP
+00018a 3070                          CPI		R23, 0X00
+00018b f0f1                      	BREQ	D1
+00018c 3071                      	CPI		R23, 0X01
+00018d f121                      	BREQ	D2
+00018e 3072                      	CPI		R23, 0X02
+00018f f151                      	BREQ	D3
+000190 3073                      	CPI		R23, 0X03
+000191 f081                      	BREQ	D4
+000192 cfa8                      	RJMP	LOOP
                                  
                                  RELOJ:	
-000183 b5b6                      	IN		R27, TCNT0
-000184 ffb0                      	SBRS	R27, 0
-000185 9573                      	INC		R23
-000186 7073                      	ANDI	R23, 0X03
+000193 b5b6                      	IN		R27, TCNT0
+000194 ffb0                      	SBRS	R27, 0
+000195 9573                      	INC		R23
+000196 7073                      	ANDI	R23, 0X03
                                  	
-000187 e060                      	LDI		R22, 0X00
-000188 b965                      	OUT		PORTB, R22
-                                 
-000189 3070                          CPI		R23, 0X00
-00018a f079                      	BREQ	D1
-00018b 3071                      	CPI		R23, 0X01
-00018c f0a9                      	BREQ	D2
-00018d 3072                      	CPI		R23, 0X02
-00018e f0d9                      	BREQ	D3
-00018f 3073                      	CPI		R23, 0X03
-000190 f009                      	BREQ	D4
-000191 cfa9                      	RJMP	LOOP
-                                 D4:
-000192 e0e0                      	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
-000193 e0f2                      	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
-                                 	; Sumar el desplazamiento según el dígito a mostrar:
-000194 0de6                      	ADD		R30, R6              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
-000195 9184                      	LPM		R24, Z
-000196 b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X08
-000197 e068                      	LDI		R22, 0x08
+000197 e060                      	LDI		R22, 0X00
 000198 b965                      	OUT		PORTB, R22
-000199 cfa1                      	RJMP	LOOP
-                                 D1:
-00019a e0e0                      	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
-00019b e0f2                      	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
-                                 	
-                                 	; Sumar el desplazamiento según el dígito a mostrar:
-00019c 0de3                      	ADD		R30, R3              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
-00019d 9184                      	LPM		R24, Z
-00019e b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X01
-00019f e061                      	LDI		R22, 0X01
-0001a0 b965                      	OUT		PORTB, R22
-0001a1 cf99                      	RJMP LOOP
-                                 D2:
+                                 
+000199 3070                          CPI		R23, 0X00
+00019a f079                      	BREQ	D1
+00019b 3071                      	CPI		R23, 0X01
+00019c f0a9                      	BREQ	D2
+00019d 3072                      	CPI		R23, 0X02
+00019e f0d9                      	BREQ	D3
+00019f 3073                      	CPI		R23, 0X03
+0001a0 f009                      	BREQ	D4
+0001a1 cf99                      	RJMP	LOOP
+                                 D4:
 0001a2 e0e0                      	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
 0001a3 e0f2                      	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
-                                 	
                                  	; Sumar el desplazamiento según el dígito a mostrar:
-0001a4 0de4                      	ADD		R30, R4              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+0001a4 0de6                      	ADD		R30, R6              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
 0001a5 9184                      	LPM		R24, Z
-0001a6 b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo
-0001a7 e062                      	LDI		R22, 0X02
+0001a6 b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X08
+0001a7 e068                      	LDI		R22, 0x08
 0001a8 b965                      	OUT		PORTB, R22
-0001a9 cf91                      	RJMP LOOP
-                                 D3:
-0001aa e0e0                          LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+0001a9 cf91                      	RJMP	LOOP
+                                 D1:
+0001aa e0e0                      	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
 0001ab e0f2                      	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
                                  	
                                  	; Sumar el desplazamiento según el dígito a mostrar:
-0001ac 0de5                      	ADD		R30, R5             ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+0001ac 0de3                      	ADD		R30, R3              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
 0001ad 9184                      	LPM		R24, Z
-0001ae b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04
-0001af e064                      	LDI		R22, 0X04
+0001ae b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X01
+0001af e061                      	LDI		R22, 0X01
 0001b0 b965                      	OUT		PORTB, R22
-0001b1 cf89                          RJMP LOOP
+0001b1 cf89                      	RJMP LOOP
+                                 D2:
+0001b2 e0e0                      	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+0001b3 e0f2                      	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+                                 	
+                                 	; Sumar el desplazamiento según el dígito a mostrar:
+0001b4 0de4                      	ADD		R30, R4              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+0001b5 9184                      	LPM		R24, Z
+0001b6 b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo
+0001b7 e062                      	LDI		R22, 0X02
+0001b8 b965                      	OUT		PORTB, R22
+0001b9 cf81                      	RJMP LOOP
+                                 D3:
+0001ba e0e0                          LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+0001bb e0f2                      	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+                                 	
+                                 	; Sumar el desplazamiento según el dígito a mostrar:
+0001bc 0de5                      	ADD		R30, R5             ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+0001bd 9184                      	LPM		R24, Z
+0001be b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04
+0001bf e064                      	LDI		R22, 0X04
+0001c0 b965                      	OUT		PORTB, R22
+0001c1 cf79                          RJMP LOOP
                                  
                                  ALARMA:
+0001c2 ffb0                      	SBRS	R27, 0
+0001c3 9573                      	INC		R23
+0001c4 7073                      	ANDI	R23, 0X03
                                  	
-0001b2 ffb0                      	SBRS	R27, 0
-0001b3 9573                      	INC		R23
-0001b4 7073                      	ANDI	R23, 0X03
-                                 	
-0001b5 143a                      	CP		R3, R10
-0001b6 f439                      	BRNE	SEGUIR
-0001b7 144b                      	CP		R4, R11
-0001b8 f429                      	BRNE	SEGUIR
-0001b9 145c                      	CP		R5, R12
-0001ba f419                      	BRNE	SEGUIR
-0001bb 146d                      	CP		R6, R13
-0001bc f409                      	BRNE	SEGUIR
-0001bd 9a5f                      	SBI		PORTD, 7
+0001c5 143a                      	CP		R3, R10
+0001c6 f439                      	BRNE	SEGUIR
+0001c7 144b                      	CP		R4, R11
+0001c8 f429                      	BRNE	SEGUIR
+0001c9 145c                      	CP		R5, R12
+0001ca f419                      	BRNE	SEGUIR
+0001cb 146d                      	CP		R6, R13
+0001cc f409                      	BRNE	SEGUIR
+0001cd 9a5f                      	SBI		PORTD, 7
                                  SEGUIR:
-0001be 985f                      	CBI		PORTD, 7
-0001bf b1d6                      	IN		R29, PINC
-0001c0 15d1                      	CP		R29, R1
-0001c1 f189                      	BREQ	COMPROBAR2
-                                 
-0001c2 ffb5                      	SBRS	R27, 5
-0001c3 c02f                      	RJMP	COMPROBAR2
-                                 
-0001c4 b1d6                      	IN		R29, PINC
-0001c5 15d1                      	CP		R29, R1
-0001c6 f161                      	BREQ	COMPROBAR2
-0001c7 2e1d                      	MOV		R1, R29
-                                 
-0001c8 ffd1                      	SBRS	R29, 1
-0001c9 94d3                      	INC		R13
-0001ca ffd2                      	SBRS	R29, 2
-0001cb 94c3                      	INC		R12
-0001cc ffd3                      	SBRS	R29, 3
-0001cd 94b3                      	INC		R11
-0001ce ffd4                      	SBRS	R29, 4
-0001cf 94a3                      	INC		R10
-                                 
-                                 
-0001d0 e060                      	LDI		R22, 0X00
-0001d1 b965                      	OUT		PORTB, R22
-0001d2 e003                      	LDI		R16, 0X03
-0001d3 16d0                      	CP		R13, R16
-0001d4 f0e1                      	BREQ	REG13
+0001ce 985f                      	CBI		PORTD, 7
+                                 	
+0001cf e060                      	LDI		R22, 0X00
+0001d0 b965                      	OUT		PORTB, R22
+0001d1 e003                      	LDI		R16, 0X03
+0001d2 16d0                      	CP		R13, R16
+0001d3 f0e1                      	BREQ	REG13
                                  ;HORAS DECENAS
-0001d5 e002                      	LDI		R16, 0X02
-0001d6 16d0                      	CP		R13, R16
-0001d7 f099                      	BREQ	CON24HORASA
+0001d4 e002                      	LDI		R16, 0X02
+0001d5 16d0                      	CP		R13, R16
+0001d6 f099                      	BREQ	CON24HORASA
                                  ;HORAS UNIDADES
-0001d8 e00a                      	LDI		R16, 0X0A
-0001d9 16c0                      	CP		R12, R16
-0001da f069                      	BREQ	LR12
+0001d7 e00a                      	LDI		R16, 0X0A
+0001d8 16c0                      	CP		R12, R16
+0001d9 f069                      	BREQ	LR12
                                  ;MINUTOS DECENAS
                                  MINDECENASA:
-0001db e006                      	LDI		R16, 0X06
-0001dc 16b0                      	CP		R11, R16
-0001dd f039                      	BREQ	LR11
+0001da e006                      	LDI		R16, 0X06
+0001db 16b0                      	CP		R11, R16
+0001dc f039                      	BREQ	LR11
                                  ;MINUTOS UNIDADES
-0001de e00a                      	LDI		R16, 0X0A
-0001df 16a0                      	CP		R10, R16
-0001e0 f009                      	BREQ	LR10
-0001e1 c011                      	RJMP	COMPROBAR2
+0001dd e00a                      	LDI		R16, 0X0A
+0001de 16a0                      	CP		R10, R16
+0001df f009                      	BREQ	LR10
+0001e0 c011                      	RJMP	COMPROBAR2
                                  LR10:
-0001e2 24aa                      	CLR		R10
-0001e3 94b3                      	INC		R11
-0001e4 c00e                      	RJMP	COMPROBAR2
+0001e1 24aa                      	CLR		R10
+0001e2 94b3                      	INC		R11
+0001e3 c00e                      	RJMP	COMPROBAR2
                                  LR11:
-0001e5 24bb                      	CLR		R11
-0001e6 94c3                      	INC		R12
-0001e7 c00b                      	RJMP	COMPROBAR2	
+0001e4 24bb                      	CLR		R11
+0001e5 94c3                      	INC		R12
+0001e6 c00b                      	RJMP	COMPROBAR2	
                                  LR12:
-0001e8 24cc                      	CLR		R12
-0001e9 94d3                      	INC		R13
-0001ea c008                      	RJMP	COMPROBAR2
+0001e7 24cc                      	CLR		R12
+0001e8 94d3                      	INC		R13
+0001e9 c008                      	RJMP	COMPROBAR2
                                  CON24HORASA:
-0001eb e005                      	LDI		R16, 0X05
-0001ec 16c0                      	CP		R12, R16
-0001ed f368                      	BRLO	MINDECENASA
-0001ee 24aa                      	CLR		R10
-0001ef 24bb                      	CLR		R11
-0001f0 24cc                      	CLR		R12
+0001ea e005                      	LDI		R16, 0X05
+0001eb 16c0                      	CP		R12, R16
+0001ec f368                      	BRLO	MINDECENASA
+0001ed 24aa                      	CLR		R10
+0001ee 24bb                      	CLR		R11
+0001ef 24cc                      	CLR		R12
                                  REG13:
-0001f1 24dd                      	CLR		R13
-0001f2 c000                      	RJMP	COMPROBAR2
+0001f0 24dd                      	CLR		R13
+0001f1 c000                      	RJMP	COMPROBAR2
                                  
                                  COMPROBAR2:
-0001f3 3070                      	CPI		R23, 0X00
-0001f4 f039                      	BREQ	DA1
-0001f5 3071                      	CPI		R23, 0X01
-0001f6 f069                      	BREQ	DA2
-0001f7 3072                      	CPI		R23, 0X02
-0001f8 f099                      	BREQ	DA3
-0001f9 3073                      	CPI		R23, 0X03
-0001fa f0c9                      	BREQ	DA4
-0001fb cf3f                      	RJMP	LOOP
+0001f2 3070                      	CPI		R23, 0X00
+0001f3 f039                      	BREQ	DA1
+0001f4 3071                      	CPI		R23, 0X01
+0001f5 f069                      	BREQ	DA2
+0001f6 3072                      	CPI		R23, 0X02
+0001f7 f099                      	BREQ	DA3
+0001f8 3073                      	CPI		R23, 0X03
+0001f9 f0c9                      	BREQ	DA4
+0001fa cf40                      	RJMP	LOOP
                                  
                                  DA1:
-0001fc e0e0                      	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
-0001fd e0f2                      	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+0001fb e0e0                      	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+0001fc e0f2                      	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
                                  	
                                  	; Sumar el desplazamiento según el dígito a mostrar:
-0001fe 0dea                      	ADD		R30, R10              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
-0001ff 9184                      	LPM		R24, Z
-000200 b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X01
-000201 e061                      	LDI		R22, 0X01
-000202 b965                      	OUT		PORTB, R22
-000203 cf37                      	RJMP LOOP
+0001fd 0dea                      	ADD		R30, R10              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+0001fe 9184                      	LPM		R24, Z
+0001ff b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X01
+000200 e061                      	LDI		R22, 0X01
+000201 b965                      	OUT		PORTB, R22
+000202 cf38                      	RJMP LOOP
                                  DA2:
-000204 e0e0                      	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
-000205 e0f2                      	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+000203 e0e0                      	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+000204 e0f2                      	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
                                  	
                                  	; Sumar el desplazamiento según el dígito a mostrar:
-000206 0deb                      	ADD		R30, R11              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
-000207 9184                      	LPM		R24, Z
-000208 b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo
-000209 e062                      	LDI		R22, 0X02
-00020a b965                      	OUT		PORTB, R22
-00020b cf2f                      	RJMP LOOP
+000205 0deb                      	ADD		R30, R11              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+000206 9184                      	LPM		R24, Z
+000207 b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo
+000208 e062                      	LDI		R22, 0X02
+000209 b965                      	OUT		PORTB, R22
+00020a cf30                      	RJMP LOOP
                                  DA3:
-00020c e0e0                          LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
-00020d e0f2                      	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+00020b e0e0                          LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+00020c e0f2                      	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
                                  	
                                  	; Sumar el desplazamiento según el dígito a mostrar:
-00020e 0dec                      	ADD		R30, R12             ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
-00020f 9184                      	LPM		R24, Z
-000210 b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04
-000211 e064                      	LDI		R22, 0X04
-000212 b965                      	OUT		PORTB, R22
-000213 cf27                          RJMP LOOP
+00020d 0dec                      	ADD		R30, R12             ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+00020e 9184                      	LPM		R24, Z
+00020f b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04
+000210 e064                      	LDI		R22, 0X04
+000211 b965                      	OUT		PORTB, R22
+000212 cf28                          RJMP LOOP
                                  DA4:
-000214 e0e0                      	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
-000215 e0f2                      	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+000213 e0e0                      	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+000214 e0f2                      	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
                                  	; Sumar el desplazamiento según el dígito a mostrar:
-000216 0ded                      	ADD		R30, R13              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
-000217 9184                      	LPM		R24, Z
-000218 b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X08
-000219 e068                      	LDI		R22, 0x08
-00021a b965                      	OUT		PORTB, R22
-00021b cf1f                      	RJMP	LOOP
+000215 0ded                      	ADD		R30, R13              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+000216 9184                      	LPM		R24, Z
+000217 b98b                      	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X08
+000218 e068                      	LDI		R22, 0x08
+000219 b965                      	OUT		PORTB, R22
+00021a cf20                      	RJMP	LOOP
                                  
                                  ;Subrutina para inicializar Timer0
                                  INIT_TMR0:
                                      ;Configurar Timer0: prescaler de 64 para generar un overflow en 10ms
-00021c e003                          LDI		R16, (1<<CS01) | (1<<CS00)
-00021d bd05                          OUT		TCCR0B, R16
-00021e e604                          LDI		R16, 100
-00021f bd06                          OUT		TCNT0, R16
-000220 9508                          RET
+00021b e003                          LDI		R16, (1<<CS01) | (1<<CS00)
+00021c bd05                          OUT		TCCR0B, R16
+00021d e604                          LDI		R16, 100
+00021e bd06                          OUT		TCNT0, R16
+00021f 9508                          RET
                                  
                                  ; ISR: Interrupción por cambio en PORTC
                                  ISR_PCINT1:
-000221 b1d6                          IN		R29, PINC       ; Leer el estado actual de PORTC
+000220 b1d6                          IN		R29, PINC       ; Leer el estado actual de PORTC
                                      ; Si PC0 está en 0, incrementa el contador
-000222 ffd0                          SBRS	R29, 0          ; Si el bit0 está alto, salta la siguiente instrucción
-000223 95c3                          INC		R28
-000224 30c6                      	CPI		R28, 0X06
-000225 f009                      	BREQ	REIN
-000226 9518                      	RETI
+000221 ffd0                          SBRS	R29, 0          ; Si el bit0 está alto, salta la siguiente instrucción
+000222 95c3                          INC		R28
+                                 
+000223 30c2                      	CPI		R28, 0X02 ;Configurar hora
+000224 f029                      	BREQ	PHORA
+000225 30c4                      	CPI		R28, 0X04 ;Configurar alarma
+000226 f081                      	BREQ	PALARMA
+000227 30c6                      	CPI		R28, 0X06
+000228 f0b9                      	BREQ	REIN
+000229 9518                      	RETI
+                                 PHORA:
+00022a e003                      	LDI   R16, (1<<CS01) | (1<<CS00)
+00022b bd05                          OUT   TCCR0B, R16
+00022c e000                      	LDI   R16, 0
+00022d bd05                          OUT   TCCR0B, R16
+                                 
+00022e ffd1                      	SBRS	R29, 1
+00022f 9453                      	INC		R5
+000230 ffd2                      	SBRS	R29, 2
+000231 945a                      	DEC		R5
+000232 ffd3                      	SBRS	R29, 3
+000233 9433                      	INC		R3
+000234 ffd4                      	SBRS	R29, 4
+000235 943a                      	DEC		R3
+000236 9518                      	RETI
+                                 PALARMA:
+000237 ffd1                      	SBRS	R29, 1
+000238 94c3                      	INC		R12
+000239 ffd2                      	SBRS	R29, 2
+00023a 94ca                      	DEC		R12
+00023b ffd3                      	SBRS	R29, 3
+00023c 94a3                      	INC		R10
+00023d ffd4                      	SBRS	R29, 4
+00023e 94aa                      	DEC		R10
+00023f 9518                      	RETI
                                  REIN:
-000227 e0c0                      	LDI		R28, 0X00
-000228 9518                          RETI
+000240 e0c0                      	LDI		R28, 0X00
+000241 9518                          RETI
                                  
                                  ; Timer0 Overflow
                                  ; Al llegar 100, actualiza el contador de segundos
                                  ; y realiza el multiplexado de los dos displays.
                                  TMR0:
-000229 e6b4                          LDI		R27, 100
-00022a bdb6                          OUT		TCNT0, R27        ; RECARGAR TCNT0 PARA ~10MS
+000242 e6b4                          LDI		R27, 100
+000243 bdb6                          OUT		TCNT0, R27        ; RECARGAR TCNT0 PARA ~10MS
                                  	
-00022b 9483                      	INC		R8
-00022c e604                      	LDI		R16, 100
-00022d 1680                      	CP		R8, R16
-00022e f100                      	BRLO	REINICIO
+000244 9483                      	INC		R8
+000245 e604                      	LDI		R16, 100
+000246 1680                      	CP		R8, R16
+000247 f100                      	BRLO	REINICIO
                                  UNIMINUTOS:
-00022f 2488                      	CLR		R8
-000230 9a1c                      	SBI		PINB, 4; PUNTOD DISPLAY
-000231 9423                      	INC		R2
-000232 e30c                      	LDI		R16, 60
-000233 1620                      	CP		R2, R16 ; 1MINUTO
-000234 f0d0                      	BRLO	REINICIO
+000248 2488                      	CLR		R8
+000249 9a1c                      	SBI		PINB, 4; PUNTOD DISPLAY
+00024a 9423                      	INC		R2
+00024b e30c                      	LDI		R16, 60
+00024c 1620                      	CP		R2, R16 ; 1MINUTO
+00024d f0d0                      	BRLO	REINICIO
                                  MINUTOS:
-000235 2422                      	CLR		R2
-000236 9433                      	INC		R3
-000237 e00a                      	LDI		R16, 0X0A
-000238 1630                      	CP		R3, R16
-000239 f0a8                      	BRLO	REINICIO
+00024e 2422                      	CLR		R2
+00024f 9433                      	INC		R3
+000250 e00a                      	LDI		R16, 0X0A
+000251 1630                      	CP		R3, R16
+000252 f0a8                      	BRLO	REINICIO
                                  RES:
-00023a 2433                      	CLR		R3
-00023b 9443                      	INC		R4
-00023c e006                      	LDI		R16, 0X06
-00023d 1640                      	CP		R4, R16
-00023e f080                      	BRLO	REINICIO
+000253 2433                      	CLR		R3
+000254 9443                      	INC		R4
+000255 e006                      	LDI		R16, 0X06
+000256 1640                      	CP		R4, R16
+000257 f080                      	BRLO	REINICIO
                                  HORAS:
-00023f 2444                      	CLR		R4
-000240 9453                      	INC		R5
-000241 e003                      	LDI		R16, 0X03
-000242 1660                      	CP		R6, R16
-000243 f031                      	BREQ	L24HORAS
+000258 2444                      	CLR		R4
+000259 9453                      	INC		R5
+00025a e003                      	LDI		R16, 0X03
+00025b 1660                      	CP		R6, R16
+00025c f031                      	BREQ	L24HORAS
                                  		
-000244 e00a                      	LDI		R16, 0X0A
-000245 1650                      	CP		R5, R16
-000246 f040                      	BRLO	REINICIO
+00025d e00a                      	LDI		R16, 0X0A
+00025e 1650                      	CP		R5, R16
+00025f f040                      	BRLO	REINICIO
                                  
-000247 2455                      	CLR		R5
-000248 9463                      	INC		R6
-000249 c005                      	RJMP	REINICIO
+000260 2455                      	CLR		R5
+000261 9463                      	INC		R6
+000262 c005                      	RJMP	REINICIO
                                  L24HORAS:
-00024a e005                      	LDI		R16, 0X05
-00024b 1650                      	CP		R5, R16
-00024c f010                      	BRLO	REINICIO
+000263 e005                      	LDI		R16, 0X05
+000264 1650                      	CP		R5, R16
+000265 f010                      	BRLO	REINICIO
                                  
-00024d 2455                      	CLR		R5
-00024e 2466                      	CLR		R6
+000266 2455                      	CLR		R5
+000267 2466                      	CLR		R6
                                  REINICIO:
 
 
@@ -1532,39 +1561,39 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega328P" register use summary:
-x  :   0 y  :   0 z  :   8 r0 :   0 r1 :   7 r2 :   4 r3 :  10 r4 :  11 
-r5 :  14 r6 :  11 r7 :   0 r8 :   4 r9 :   1 r10:   7 r11:   8 r12:   9 
-r13:   8 r14:   0 r15:   0 r16:  82 r17:   0 r18:   0 r19:   0 r20:   0 
-r21:   0 r22:  23 r23:  19 r24:  17 r25:   0 r26:   0 r27:   8 r28:   7 
-r29:  20 r30:  16 r31:   8 
+x  :   0 y  :   0 z  :   8 r0 :   0 r1 :   1 r2 :   4 r3 :  15 r4 :  12 
+r5 :  18 r6 :  12 r7 :   0 r8 :   4 r9 :   1 r10:   8 r11:   7 r12:  10 
+r13:   7 r14:   0 r15:   0 r16: 108 r17:   0 r18:   0 r19:   0 r20:   0 
+r21:   0 r22:  23 r23:  19 r24:  17 r25:   0 r26:   0 r27:   6 r28:   9 
+r29:  10 r30:  16 r31:   8 
 Registers used: 22 out of 35 (62.9%)
 
 "ATmega328P" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   8 adiw  :   0 and   :   0 
 andi  :   3 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :  31 brge  :   0 brhc  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :  34 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   8 brlt  :   0 brmi  :   0 
 brne  :   4 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
 brvs  :   0 bset  :   0 bst   :   0 call  :   1 cbi   :   1 cbr   :   0 
-clc   :   0 clh   :   0 cli   :   1 cln   :   0 clr   :  21 cls   :   0 
-clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :  27 cpc   :   0 
-cpi   :  16 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   6 inc   :  24 jmp   :   0 
-ld    :   0 ldd   :   0 ldi   :  69 lds   :   0 lpm   :  16 lsl   :   0 
-lsr   :   0 mov   :  14 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :  29 pop   :   0 
-push  :   0 rcall :   0 ret   :   1 reti  :   3 rjmp  :  29 rol   :   0 
+clc   :   0 clh   :   0 cli   :   1 cln   :   0 clr   :  20 cls   :   0 
+clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :  28 cpc   :   0 
+cpi   :  18 cpse  :   0 dec   :   6 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   2 inc   :  19 jmp   :   0 
+ld    :   0 ldd   :   0 ldi   :  82 lds   :   0 lpm   :  16 lsl   :   0 
+lsr   :   0 mov   :  18 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :  31 pop   :   0 
+push  :   0 rcall :   0 ret   :   1 reti  :   5 rjmp  :  33 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   0 sbi   :   2 sbic  :   0 sbis  :   0 
-sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :  14 sec   :   0 seh   :   0 
+sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :  12 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   6 
 sub   :   0 subi  :   0 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 24 out of 113 (21.2%)
+Instructions used: 25 out of 113 (22.1%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0004a0    668     10    678   32768   2.1%
+[.cseg] 0x000000 0x0004d2    718     10    728   32768   2.2%
 [.dseg] 0x000100 0x000100      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
