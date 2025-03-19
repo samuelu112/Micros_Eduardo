@@ -10,7 +10,7 @@
 
 .include "M328PDEF.inc"
 
-; Programa Principal (código) 
+; Programa Principal
 
 
 .cseg
@@ -24,8 +24,9 @@
 ; Vector de interrupción de Timer0 Overflow (ATmega328P: 0x0020)
 .org 0x0020
     RJMP TMR0
-
-.ORG 0X0100
+.org 0x001C          ; Vector de interrupción de overflow del Timer2 (ATmega328P)
+    RJMP TMR2
+.ORG 0X0100		;Direccionamiento tabla de 7 segmentos
 TABLA7SEG: .DB 0x3F, 0X06, 0X5B, 0X4F, 0X66, 0X6D, 0X7D, 0X07, 0X7F, 0X67
 
 
@@ -45,30 +46,36 @@ START:
 	STS		TIFR0, R16
 	; Inicializar Timer0
     CALL	INIT_TMR0
+; --- Habilitar interrupción por overflow ---
+    LDI   R16, (1<<TOIE2)        ; TOIE2: Habilitar interrupción por overflow
+    STS   TIMSK2, R16
+	LDI		R16, (1<<TOV2)
+	STS		TIFR2, R16
+	CALL	INIT_TMR2
     ; Configurar reloj: F_CPU = 1 MHz
-    LDI   r16, (1<<CLKPCE)
-    STS   CLKPR, r16
-	LDI    R16, 0b00000100
-    STS    CLKPR, R16
+    LDI		r16, (1<<CLKPCE)
+    STS		CLKPR, r16
+	LDI		R16, 0b00000100
+    STS		CLKPR, R16
 
     ; Configurar PORTB:
     ; SALIDAS
     ; TRANSISTORES
 	; PB0 minutos/dias unidades, PB1, minutos/dias decenas, PB2 Horas/meses unidades, PB3 horas/meses decenas
-    LDI   r16, 0b00011111   ;
+    LDI   r16, 0b00111111   ;
     OUT   DDRB, r16
-    LDI   r16, 0b11111111
+    LDI   r16, 0b11011111
     OUT   PORTB, r16
 	
 ; Configurar interrupciones por cambio para PORTC
     ; Habilitar interrupción por cambio para el grupo de PORTC (PCIE1 en PCICR)
     LDI    R16, 0b00000010//(1<<PCIE1)
     STS    PCICR, R16
-    ; Habilitar interrupciones para PC0 y PC1 (corresponden a PCINT8 y PCINT9)
+    ; Habilitar interrupciones para PC0, PC1, PC2, PC3 y PC4
     LDI    R16, (1<<PCINT8) | (1<<PCINT9) | (1<<PCINT10) |(1<<PCINT11)|(1<<PCINT12)
     STS    PCMSK1, R16
 
-	LDI		R16, 0B00000000
+	LDI		R16, 0B00100000
 	OUT		DDRC, R16
 	LDI		R16, 0B11111111
 	OUT		PORTC, R16
@@ -96,8 +103,13 @@ START:
 	MOV		R11, R16
 	MOV		R12, R16
 	MOV		R13, R16
-	LDI		R16, 0XFF
-	MOV		R1, R16
+	MOV		R15, R16
+	LDI		R17, 0X01
+	MOV		R14, R17
+	LDI		R18, 0X00
+	LDI		R19, 0X00
+	LDI		R20, 0X00
+	LDI		R21, 0X00
     LDI		r22, 0
     ; Condición de multiplexado en r23
     LDI		r23, 0
@@ -108,27 +120,50 @@ START:
 LOOP:
 	CPI		R28, 0X00
 	BREQ	RELOJ1
-	;CPI		R28, 0X01
-	;BREQ	FECHA
+	CPI		R28, 0X01
+	BREQ	FECHA1
 	CPI		R28, 0X02
 	BREQ	CONHORA
-	;CPI		R28, 0X03
-	;BREQ	CONFECHA
+	CPI		R28, 0X03
+	BREQ	CONFECHA1
 	CPI		R28, 0X04
 	BREQ	ALARMA1
+	CPI		R28, 0X05
+	BREQ	ACTIVAR_ALARMA1
+	CPI		R28, 0X06
+	BREQ	CONTADOR0
 	RJMP	LOOP
+CONTADOR0:
+	CLR		R28
+	LDI		R16, (1<<CS01) | (1<<CS00)
+    OUT		TCCR0B, R16
+	LDI		R16, 100         ; Valor inicial para 10ms (1MHz)
+	OUT		TCNT0, R16
+	RJMP	LOOP
+CONFECHA1:
+	RJMP	CONFECHA
+FECHA1:
+	RJMP	FECHA
 ALARMA1:
 	RJMP	ALARMA
 RELOJ1:
 	RJMP	RELOJ
+ACTIVAR_ALARMA1:
+	RJMP	ACTIVAR_ALARMA
+APAGARA:
+	RJMP	LOOP
+;-----------------MODO CONFIGURAR HORA-------------------
 CONHORA:
-	SBRS	R27, 0
+	LDI		R16, 0
+    OUT		TCCR0B, R16
+	LDS		R25, TCNT2
+	SBRS	R25, 0
 	INC		R23
 	ANDI	R23, 0X03
-
+	
 	LDI		R22, 0X00
 	OUT		PORTB, R22
-
+	
 	LDI		R16, 0XFF ;UNDERFLOW MINUTOS
 	CP		R3, R16
 	BREQ	MIN59
@@ -213,9 +248,9 @@ CON24HORAS:
 	CLR		R5
 REG6:
 	CLR		R6
-
+;----------------------MULTIPLEXADO------------------
 COMPROBAR:
-    CPI		R23, 0X00
+	CPI		R23, 0X00
 	BREQ	D1
 	CPI		R23, 0X01
 	BREQ	D2
@@ -224,13 +259,28 @@ COMPROBAR:
 	CPI		R23, 0X03
 	BREQ	D4
 	RJMP	LOOP
-
+;-------------------MODO HORA------------------------
 RELOJ:	
-	IN		R27, TCNT0
+	lds		R27, TCNT2
 	SBRS	R27, 0
 	INC		R23
 	ANDI	R23, 0X03
 	
+	CPI		R21, 0X01
+	BRNE	SEGUIR2
+	CP		R3, R10
+	BRNE	SEGUIR1
+	CP		R4, R11
+	BRNE	SEGUIR1
+	CP		R5, R12
+	BRNE	SEGUIR1
+	CP		R6, R13
+	BRNE	SEGUIR1
+	SBI		PORTD, 7
+	RJMP	SEGUIR4
+SEGUIR1:
+	CBI		PORTD, 7
+SEGUIR2:
 	LDI		R22, 0X00
 	OUT		PORTB, R22
 
@@ -243,16 +293,7 @@ RELOJ:
 	CPI		R23, 0X03
 	BREQ	D4
 	RJMP	LOOP
-D4:
-	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
-	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
-	; Sumar el desplazamiento según el dígito a mostrar:
-	ADD		R30, R6              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
-	LPM		R24, Z
-	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X08
-	LDI		R22, 0x08
-	OUT		PORTB, R22
-	RJMP	LOOP
+
 D1:
 	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
 	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
@@ -286,70 +327,349 @@ D3:
 	LDI		R22, 0X04
 	OUT		PORTB, R22
     RJMP LOOP
-
-ALARMA:
+D4:
+	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+	; Sumar el desplazamiento según el dígito a mostrar:
+	ADD		R30, R6              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	LPM		R24, Z
+	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X08
+	LDI		R22, 0x08
+	OUT		PORTB, R22
+	RJMP	LOOP
+;-------------------MODO FECHA----------------------------
+FECHA:
+	lds		R27, TCNT2
 	SBRS	R27, 0
 	INC		R23
 	ANDI	R23, 0X03
 	
+	CPI		R21, 0X01
+	BRNE	SEGUIR4
 	CP		R3, R10
-	BRNE	SEGUIR
+	BRNE	SEGUIR3
 	CP		R4, R11
-	BRNE	SEGUIR
+	BRNE	SEGUIR3
 	CP		R5, R12
-	BRNE	SEGUIR
+	BRNE	SEGUIR1
 	CP		R6, R13
-	BRNE	SEGUIR
+	BRNE	SEGUIR1
 	SBI		PORTD, 7
-SEGUIR:
+	RJMP	SEGUIR4
+SEGUIR3:
 	CBI		PORTD, 7
-	
-	LDI		R22, 0X00
+SEGUIR4:
+	LDI		R22, 0X20
 	OUT		PORTB, R22
+;-----------------MULTIPLEXADO--------------------------
+COMPROBAR3:
+    CPI		R23, 0X00
+	BREQ	FD1
+	CPI		R23, 0X01
+	BREQ	FD2
+	CPI		R23, 0X02
+	BREQ	FD3
+	CPI		R23, 0X03
+	BREQ	FD4
+	RJMP	LOOP
+
+FD1:
+	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+	
+	; Sumar el desplazamiento según el dígito a mostrar:
+	ADD		R30, R14              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	LPM		R24, Z
+	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X01
+	LDI		R22, 0X21
+	OUT		PORTB, R22
+	RJMP LOOP
+FD2:
+	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+	
+	; Sumar el desplazamiento según el dígito a mostrar:
+	ADD		R30, R15              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	LPM		R24, Z
+	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo
+	LDI		R22, 0X22
+	OUT		PORTB, R22
+	RJMP LOOP
+FD3:
+    LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+	
+	; Sumar el desplazamiento según el dígito a mostrar:
+	ADD		R30, R17             ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	LPM		R24, Z
+	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04
+	LDI		R22, 0X24
+	OUT		PORTB, R22
+    RJMP LOOP
+FD4:
+	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
+	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
+	; Sumar el desplazamiento según el dígito a mostrar:
+	ADD		R30, R18              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	LPM		R24, Z
+	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X08
+	LDI		R22, 0x28
+	OUT		PORTB, R22
+	RJMP	LOOP
+;------------MODO CONFIGURAR FECHA-----------
+CONFECHA:
+	LDI		R16, 0
+    OUT		TCCR0B, R16
+	LDS		R25, TCNT2
+	SBRS	R25, 0
+	INC		R23
+	ANDI	R23, 0X03
+	
+	LDI		R22, 0X20
+	OUT		PORTB, R22
+
+	;hacer de 1 a 12
+	MOV		R19, R17
+	MOV		R20, R18
+	LDI		R16, 10
+	MUL		R20, R16
+	ADD		R19, R0
+
+	CPI		R17, 0XFF
+	BREQ	SEPTIEMBRE
+	CPI		R19, 0X0D
+	BREQ	ENERO
+	CPI		R19, 0X00
+	BREQ	DICIEMBREC
+	CPI		R19, 0X0A
+	BREQ	OCTUBRE
+
+	LDI		R16, 0X0A
+	CP		R14, R16
+	BREQ	PONERA101
+
+	LDI		R16, 0XFF
+	CP		R14, R16
+	BREQ	VERMES
+
+	LDI		R16, 0X09
+	CP		R14, R16
+	BREQ	ESFEBRERO
+	
+	LDI		R16, 0X00
+	CP		R14, R16
+	BREQ	VERMES1
+
 	LDI		R16, 0X03
-	CP		R13, R16
-	BREQ	REG13
+	CP		R15, R16
+	BRNE	COMPROBAR31
+
+	LDI		R16, 0X01
+	CP		R14, R16
+	BREQ	MESDE30DIAS
+	LDI		R16, 0X02
+	CP		R14, R16
+	BREQ	ABRILREINICIO
+	RJMP	COMPROBAR3
+VERMES1:
+	LDI		R16, 0X00
+	CP		R15, R16
+	BREQ	IRA
+	RJMP	COMPROBAR3
+	
+ENERO:
+	CLR		R18
+	LDI		R17, 0X01
+	RJMP	COMPROBAR3
+SEPTIEMBRE:
+	CPI		R18, 0X01
+	BRNE	COMPROBAR31
+	LDI		R17, 0X09
+	CLR		R18
+	RJMP	COMPROBAR3
+OCTUBRE:
+	LDI		R18, 0X01
+	CLR		R17
+	RJMP	COMPROBAR3
+DICIEMBREC:
+	LDI		R18, 0X01
+	LDI		R17, 0X02
+	RJMP	COMPROBAR3
+PONERA101:
+	RJMP	PONERA10
+ESFEBRERO:
+	RJMP	ESFEBRERO1
+MESDE30DIAS:
+	RJMP	MESDE30DIAS1
+ABRILREINICIO:
+	RJMP	ABRILREINICIO1
+VERMES:
+	LDI		R16, 0
+	CP		R15, R16
+	BRNE	MENOSR15
+IRA:
+	CPI		R19, 2
+	BREQ	FEB
+	CPI		R19, 4
+	BREQ	ABR
+	CPI		R19, 6
+	BREQ	ABR
+	CPI		R19, 9
+	BREQ	ABR
+	CPI		R19, 11
+	BREQ	ABR
+	LDI		R16, 0X01
+	MOV		R14, R16
+	LDI		R16, 0X03
+	MOV		R15, R16
+	RJMP	COMPROBAR3
+FEB:
+	LDI		R16, 0X08
+	MOV		R14, R16
+	LDI		R16, 0X02
+	MOV		R15, R16
+	RJMP	COMPROBAR3
+COMPROBAR31:
+	RJMP	COMPROBAR3
+ABR:
+	LDI		R16, 0X00
+	MOV		R14, R16
+	LDI		R16, 0X03
+	MOV		R15, R16
+	RJMP	COMPROBAR3
+MENOSR15:
+	DEC		R15
+	LDI		R16, 0X09
+	MOV		R14, R16
+	RJMP	COMPROBAR3
+MESDE30DIAS1:
+	CPI		R19, 0X04
+	BREQ	ABRILREINICIO
+	CPI		R19, 0X06
+	BREQ	ABRILREINICIO
+	CPI		R19, 0X09
+	BREQ	ABRILREINICIO
+	CPI		R19, 0X0B
+	BREQ	ABRILREINICIO
+	RJMP	COMPROBAR3
+ABRILREINICIO1:
+	CLR		R15
+	LDI		R16, 0X01
+	MOV		R14, R16
+	RJMP	COMPROBAR3
+PONERA10:
+	INC		R15
+	CLR		R14
+	RJMP	COMPROBAR3
+ESFEBRERO1:
+	LDI		R16, 0X02
+	CP		R15, R16
+	BRNE	COMPROBAR31
+	CPI		R19, 0X02
+	BRNE	COMPROBAR31
+	LDI		R16, 0X01
+	MOV		R14, R16
+	CLR		R15
+	RJMP	COMPROBAR3
+	
+;------------MODO CONFIGURAR ALARMA----------	
+ALARMA:
+	LDI   R16, 0
+    OUT   TCCR0B, R16
+	LDS		R25, TCNT2
+	SBRS	R25, 0
+	INC		R23
+	ANDI	R23, 0X03
+	
+	LDI		R22, 0X20
+	OUT		PORTB, R22
+	
+	LDI		R16, 0XFF ;UNDERFLOW MINUTOS
+	CP		R10, R16
+	BREQ	AMIN59
+
+	LDI		R16, 0XFF
+	CP		R12, R16
+	BREQ	AHOR24
+
 ;HORAS DECENAS
 	LDI		R16, 0X02
 	CP		R13, R16
-	BREQ	CON24HORASA
+	BREQ	ACON24HORAS
 ;HORAS UNIDADES
 	LDI		R16, 0X0A
 	CP		R12, R16
-	BREQ	LR12
+	BREQ	ALR5
 ;MINUTOS DECENAS
-MINDECENASA:
+AMINDECENAS:
 	LDI		R16, 0X06
 	CP		R11, R16
-	BREQ	LR11
+	BREQ	ALR4
 ;MINUTOS UNIDADES
 	LDI		R16, 0X0A
 	CP		R10, R16
-	BREQ	LR10
+	BREQ	ALR3
 	RJMP	COMPROBAR2
-LR10:
+AMIN59:
+	LDI		R16, 0X00
+	CP		R11, R16
+	BREQ	AMINMAX
+	DEC		R11
+	LDI		R16, 0X09
+	MOV		R10, R16
+	RJMP	COMPROBAR2
+AMINMAX:
+	LDI		R16, 0XFF
+	CP		R10, R16
+	BREQ	APONER59
+	RJMP	COMPROBAR2
+APONER59:
+	LDI		R16, 0X05
+	MOV		R11, R16
+	LDI		R16, 0X09
+	MOV		R10, R16
+	RJMP	COMPROBAR2
+
+AHOR24:
+	LDI		R16, 0X00
+	CP		R13, R16
+	BREQ	APONER24
+	DEC		R13
+	LDI		R16, 0X09
+	MOV		R12, R16
+	RJMP	COMPROBAR2
+APONER24:
+	LDI		R16, 0XFF
+	CP		R12, R16
+	BREQ	APONER23
+	RJMP	COMPROBAR2
+APONER23:
+	LDI		R16, 0X02
+	MOV		R13, R16
+	LDI		R16, 0X03
+	MOV		R12, R16
+	RJMP	COMPROBAR2
+ALR3:
 	CLR		R10
 	INC		R11
 	RJMP	COMPROBAR2
-LR11:
+ALR4:
 	CLR		R11
-	INC		R12
+	CLR		R10
 	RJMP	COMPROBAR2	
-LR12:
+ALR5:
 	CLR		R12
 	INC		R13
 	RJMP	COMPROBAR2
-CON24HORASA:
-	LDI		R16, 0X05
+ACON24HORAS:
+	LDI		R16, 0X04
 	CP		R12, R16
-	BRLO	MINDECENASA
-	CLR		R10
-	CLR		R11
+	BRLO	AMINDECENAS
 	CLR		R12
-REG13:
+AREG6:
 	CLR		R13
-	RJMP	COMPROBAR2
 
+;-------------MULTIPLEXADO 2-----------
 COMPROBAR2:
 	CPI		R23, 0X00
 	BREQ	DA1
@@ -369,7 +689,7 @@ DA1:
 	ADD		R30, R10              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X01
-	LDI		R22, 0X01
+	LDI		R22, 0X21
 	OUT		PORTB, R22
 	RJMP LOOP
 DA2:
@@ -380,7 +700,7 @@ DA2:
 	ADD		R30, R11              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo
-	LDI		R22, 0X02
+	LDI		R22, 0X22
 	OUT		PORTB, R22
 	RJMP LOOP
 DA3:
@@ -391,7 +711,7 @@ DA3:
 	ADD		R30, R12             ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04
-	LDI		R22, 0X04
+	LDI		R22, 0X24
 	OUT		PORTB, R22
     RJMP LOOP
 DA4:
@@ -401,10 +721,34 @@ DA4:
 	ADD		R30, R13              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X08
-	LDI		R22, 0x08
+	LDI		R22, 0x28
 	OUT		PORTB, R22
-	RJMP	LOOP
+	RJMP	LOOP  
 
+ACTIVAR_ALARMA:
+	LDI   R16, 0
+    OUT   TCCR0B, R16
+	SBI		PORTD, 7
+	LDS		R25, TCNT2
+	SBRS	R25, 0
+	INC		R23
+	ANDI	R23, 0X03
+	
+	LDI		R22, 0X00
+	OUT		PORTB, R22
+
+	CPI		R21, 0X02
+	BREQ	REINICIAR21
+	CPI		R21, 0XFF
+	BREQ	REINICIARA1
+	RJMP	LOOP;COMPROBAR2
+REINICIAR21:
+	LDI		R21, 0X01
+	RJMP	LOOP;COMPROBAR2
+REINICIARA1:
+	LDI		R21, 0X00
+	RJMP	LOOP;COMPROBAR2
+;----------------------------------------------------------
 ;Subrutina para inicializar Timer0
 INIT_TMR0:
     ;Configurar Timer0: prescaler de 64 para generar un overflow en 10ms
@@ -413,7 +757,14 @@ INIT_TMR0:
     LDI		R16, 100
     OUT		TCNT0, R16
     RET
-
+INIT_TMR2:
+	; --- Inicializar el contador ---
+	LDI   R16, (1<<CS22)         ; Prescaler = 64 (CS22=1, CS21=0, CS20=0)
+    STS   TCCR2B, R16
+    LDI   R16, 100                ; Iniciar desde 0
+    STS   TCNT2, R16
+	RET
+;--------------------------------------------------------------------------------
 ; ISR: Interrupción por cambio en PORTC
 ISR_PCINT1:
     IN		R29, PINC       ; Leer el estado actual de PORTC
@@ -421,19 +772,31 @@ ISR_PCINT1:
     SBRS	R29, 0          ; Si el bit0 está alto, salta la siguiente instrucción
     INC		R28
 
+	CPI		R28, 0X00 ;Hora
+	BREQ	VERHORA
+	CPI		R28, 0X01 ;Configurar hora
+	BREQ	VERFECHA
 	CPI		R28, 0X02 ;Configurar hora
 	BREQ	PHORA
+	CPI		R28, 0X03 ;Configurar fecha
+	BREQ	PFECHA
 	CPI		R28, 0X04 ;Configurar alarma
 	BREQ	PALARMA
-	CPI		R28, 0X06
-	BREQ	REIN
+	CPI		R28, 0X05
+	BREQ	PACALARMA
+	RETI
+VERHORA:
+	SBI		PORTC, 5
+	CBI		PORTB, 5
+	RETI
+VERFECHA:
+	CBI		PORTC, 5
+	LDI		R16, 0X20
+	OUT		PORTB, R16
 	RETI
 PHORA:
-	LDI   R16, (1<<CS01) | (1<<CS00)
-    OUT   TCCR0B, R16
-	LDI   R16, 0
-    OUT   TCCR0B, R16
-
+	SBI		PORTC, 5
+	CBI		PORTB, 5
 	SBRS	R29, 1
 	INC		R5
 	SBRS	R29, 2
@@ -443,7 +806,24 @@ PHORA:
 	SBRS	R29, 4
 	DEC		R3
 	RETI
+PFECHA:
+	CBI		PORTC, 5
+	LDI		R16, 0X20
+	OUT		PORTB, R16
+	SBRS	R29, 1
+	INC		R17
+	SBRS	R29, 2
+	DEC		R17
+	SBRS	R29, 3
+	INC		R14
+	SBRS	R29, 4
+	DEC		R14
+	RETI
 PALARMA:
+	SBI		PORTC, 5
+	LDI		R16, 0X20
+	OUT		PORTB, R16
+
 	SBRS	R29, 1
 	INC		R12
 	SBRS	R29, 2
@@ -453,44 +833,59 @@ PALARMA:
 	SBRS	R29, 4
 	DEC		R10
 	RETI
-REIN:
-	LDI		R28, 0X00
+PACALARMA:
+	CBI		PORTC, 5
+	LDI		R16, 0X00
+	OUT		PORTB, R16
+	SBRS	R29, 1
+	INC		R21
+	SBRS	R29, 2
+	DEC		R21
     RETI
+
 
 ; Timer0 Overflow
 ; Al llegar 100, actualiza el contador de segundos
 ; y realiza el multiplexado de los dos displays.
+TMR2:
+	LDI		R16, 100                ; Iniciar desde 0
+    STS		TCNT2, R16
+	INC		R26
+	CPI		R26, 100
+	BRLO	REINICIO1
+	CLR		R26
+	RETI
 TMR0:
-    LDI		R27, 100
-    OUT		TCNT0, R27        ; RECARGAR TCNT0 PARA ~10MS
+    LDI		R16, 100
+    OUT		TCNT0, R16       ; RECARGAR TCNT0 PARA ~10MS
 	
 	INC		R8
 	LDI		R16, 100
 	CP		R8, R16
-	BRLO	REINICIO
+	BRLO	REINICIO1
 UNIMINUTOS:
-	CLR		R8
 	SBI		PINB, 4; PUNTOD DISPLAY
+	CLR		R8
 	INC		R2
 	LDI		R16, 60
 	CP		R2, R16 ; 1MINUTO
-	BRLO	REINICIO
+	BRLO	REINICIO1
 MINUTOS:
 	CLR		R2
 	INC		R3
 	LDI		R16, 0X0A
 	CP		R3, R16
-	BRLO	REINICIO
+	BRLO	REINICIO1
 RES:
 	CLR		R3
 	INC		R4
 	LDI		R16, 0X06
 	CP		R4, R16
-	BRLO	REINICIO
+	BRLO	REINICIO1
 HORAS:
 	CLR		R4
 	INC		R5
-	LDI		R16, 0X03
+	LDI		R16, 0X02
 	CP		R6, R16
 	BREQ	L24HORAS
 		
@@ -500,13 +895,100 @@ HORAS:
 
 	CLR		R5
 	INC		R6
+REINICIO1:
 	RJMP	REINICIO
 L24HORAS:
-	LDI		R16, 0X05
+	LDI		R16, 0X03
 	CP		R5, R16
 	BRLO	REINICIO
-
 	CLR		R5
 	CLR		R6
+; --- Incrementar día ---
+;VERIFICAR MES
+	;hacer de 1 a 12
+	MOV		R19, R17
+	MOV		R20, R18
+	LDI		R16, 10
+	MUL		R20, R16
+	ADD		R19, R0
+
+	CPI		R19, 0X02
+	BREQ	FEBRERO
+	CPI		R19, 0X04
+	BREQ	ABRIL
+	CPI		R19, 0X06
+	BREQ	ABRIL
+	CPI		R19, 0X09
+	BREQ	ABRIL
+	CPI		R19, 0X0B
+	BREQ	ABRIL
+	;MESES 31 DIAS
+	LDI		R16, 0X03
+	CP		R15, R16
+	BREQ	MESES31
+	RJMP	SFEB
+MESES31:
+	LDI		R16, 0X01
+	CP		R14, R16
+	BRLO	SFEB
+	CPI		R19, 0X0C
+	BREQ	DICIEMBRE
+	CLR		R15
+	INC		R17
+	LDI		R16, 0X01
+	MOV		R14, R16
+	CPI		R17, 0X0A
+	BREQ	MES
+	RJMP	REINICIO
+SFEB:
+    INC		R14                ; Incrementar unidades de día
+	LDI		R16, 10
+    CP		R14, R16            ; ¿Unidades >= 10?
+    BRLO	REINICIO      ; No, verificar máximo
+    CLR		R14                ; Resetear unidades
+    INC		R15                ; Incrementar decenas de día 
 REINICIO:
-	RETI
+    RETI
+FEBRERO:
+	LDI		R16, 0X02
+	CP		R15, R16
+	BREQ	FEB28
+	RJMP	SFEB
+FEB28:
+	LDI		R16, 0X08
+	CP		R14, R16
+	BRLO	SFEB
+	CLR		R15
+	INC		R17
+	LDI		R16, 0X01
+	MOV		R14, R16
+	CPI		R17, 0X0A
+	BREQ	MES
+	RJMP	REINICIO
+ABRIL:
+	LDI		R16, 0X03
+	CP		R15, R16
+	BREQ	AVIEJO
+	RJMP	SFEB
+AVIEJO:
+	LDI		R16, 0X00
+	CP		R14, R16
+	BRLO	SFEB
+	CLR		R15 
+	INC		R17
+	LDI		R16, 0X01
+	MOV		R14, R16
+	CPI		R17, 0X0A
+	BREQ	MES
+	RJMP	REINICIO
+MES:   
+	CLR		R17
+	INC		R18
+	RJMP	REINICIO
+DICIEMBRE:
+	CLR		R15
+	CLR		R18
+	LDI		R17, 1
+	LDI		R16, 0X01
+	MOV		R14, R16
+	RJMP	REINICIO
