@@ -74,7 +74,7 @@ START:
     ; Habilitar interrupciones para PC0, PC1, PC2, PC3 y PC4
     LDI    R16, (1<<PCINT8) | (1<<PCINT9) | (1<<PCINT10) |(1<<PCINT11)|(1<<PCINT12)
     STS    PCMSK1, R16
-
+	;Activar entradas y salida en puertoC
 	LDI		R16, 0B00100000
 	OUT		DDRC, R16
 	LDI		R16, 0B11111111
@@ -94,8 +94,8 @@ START:
 	MOV		R3, R16
 	MOV		R4, R16
     MOV		R5, R16
-    ; Contador de segundos:
-    ; R6: unidades (0–9) y r22: decenas (0–6)
+    ; Contadores:
+    ; Valores iniciales
     MOV		R6, R16
 	MOV		R8, R16
 	MOV		R9, R16
@@ -115,32 +115,35 @@ START:
     LDI		r23, 0
 	LDI		R28, 0
 
-    sei                      ; Habilitar interrupciones globales
+    sei     ; Habilitar interrupciones globales
 
+;--------------LOOP principal-----------------
 LOOP:
 	CPI		R28, 0X00
-	BREQ	RELOJ1
+	BREQ	RELOJ1		;Modo reloj
 	CPI		R28, 0X01
-	BREQ	FECHA1
+	BREQ	FECHA1		;Modo fecha
 	CPI		R28, 0X02
-	BREQ	CONHORA
+	BREQ	CONHORA		;Modo modificar hora
 	CPI		R28, 0X03
-	BREQ	CONFECHA1
+	BREQ	CONFECHA1	;Modo modificar fecha
 	CPI		R28, 0X04
-	BREQ	ALARMA1
+	BREQ	ALARMA1		;Configuracion alarma
 	CPI		R28, 0X05
-	BREQ	ACTIVAR_ALARMA1
+	BREQ	ACTIVAR_ALARMA1 ;Activar alarma
 	CPI		R28, 0X06
-	BREQ	CONTADOR0
+	BREQ	CONTADOR0	;Reiniciar los modos
 	RJMP	LOOP
-CONTADOR0:
+
+CONTADOR0:	;Reinciar los modos
 	CLR		R28
-	LDI		R16, (1<<CS01) | (1<<CS00)
+	LDI		R16, (1<<CS01) | (1<<CS00);Activar timer0
     OUT		TCCR0B, R16
 	LDI		R16, 100         ; Valor inicial para 10ms (1MHz)
 	OUT		TCNT0, R16
 	RJMP	LOOP
-CONFECHA1:
+	;Saltos
+CONFECHA1:		
 	RJMP	CONFECHA
 FECHA1:
 	RJMP	FECHA
@@ -154,9 +157,9 @@ APAGARA:
 	RJMP	LOOP
 ;-----------------MODO CONFIGURAR HORA-------------------
 CONHORA:
-	LDI		R16, 0
-    OUT		TCCR0B, R16
-	LDS		R25, TCNT2
+	LDI		R16, 0	;Desactivar timer0
+    OUT		TCCR0B, R16 
+	LDS		R25, TCNT2 ;Usar timer2 para indicador para multiplexado
 	SBRS	R25, 0
 	INC		R23
 	ANDI	R23, 0X03
@@ -171,7 +174,6 @@ CONHORA:
 	LDI		R16, 0XFF
 	CP		R5, R16
 	BREQ	HOR24
-
 ;HORAS DECENAS
 	LDI		R16, 0X02
 	CP		R6, R16
@@ -209,7 +211,6 @@ PONER59:
 	LDI		R16, 0X09
 	MOV		R3, R16
 	RJMP	COMPROBAR
-
 HOR24:
 	LDI		R16, 0X00
 	CP		R6, R16
@@ -248,7 +249,7 @@ CON24HORAS:
 	CLR		R5
 REG6:
 	CLR		R6
-;----------------------MULTIPLEXADO------------------
+;MULTIPLEXADO
 COMPROBAR:
 	CPI		R23, 0X00
 	BREQ	D1
@@ -277,7 +278,7 @@ RELOJ:
 	CP		R6, R13
 	BRNE	SEGUIR1
 	SBI		PORTD, 7
-	RJMP	SEGUIR4
+	RJMP	SEGUIR2
 SEGUIR1:
 	CBI		PORTD, 7
 SEGUIR2:
@@ -293,13 +294,13 @@ SEGUIR2:
 	CPI		R23, 0X03
 	BREQ	D4
 	RJMP	LOOP
-
+;----------------------Salidas a display
 D1:
 	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
 	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
 	
 	; Sumar el desplazamiento según el dígito a mostrar:
-	ADD		R30, R3              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	ADD		R30, R3              ;se ajusta la dirección
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X01
 	LDI		R22, 0X01
@@ -310,7 +311,7 @@ D2:
 	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
 	
 	; Sumar el desplazamiento según el dígito a mostrar:
-	ADD		R30, R4              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	ADD		R30, R4              ; se ajusta la dirección
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo
 	LDI		R22, 0X02
@@ -321,7 +322,7 @@ D3:
 	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
 	
 	; Sumar el desplazamiento según el dígito a mostrar:
-	ADD		R30, R5             ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	ADD		R30, R5             ; se ajusta la dirección
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04
 	LDI		R22, 0X04
@@ -331,7 +332,7 @@ D4:
 	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
 	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
 	; Sumar el desplazamiento según el dígito a mostrar:
-	ADD		R30, R6              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	ADD		R30, R6              ;se ajusta la dirección
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X08
 	LDI		R22, 0x08
@@ -372,13 +373,13 @@ COMPROBAR3:
 	CPI		R23, 0X03
 	BREQ	FD4
 	RJMP	LOOP
-
+;---------------------Salidas display---------------------
 FD1:
 	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
 	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
 	
 	; Sumar el desplazamiento según el dígito a mostrar:
-	ADD		R30, R14              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	ADD		R30, R14              ; se ajusta la dirección
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X01
 	LDI		R22, 0X21
@@ -389,7 +390,7 @@ FD2:
 	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
 	
 	; Sumar el desplazamiento según el dígito a mostrar:
-	ADD		R30, R15              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	ADD		R30, R15              ; se ajusta la dirección
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo
 	LDI		R22, 0X22
@@ -400,7 +401,7 @@ FD3:
 	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
 	
 	; Sumar el desplazamiento según el dígito a mostrar:
-	ADD		R30, R17             ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	ADD		R30, R17             ; se ajusta la dirección
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04
 	LDI		R22, 0X24
@@ -410,7 +411,7 @@ FD4:
 	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
 	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
 	; Sumar el desplazamiento según el dígito a mostrar:
-	ADD		R30, R18              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	ADD		R30, R18              ; se ajusta la dirección
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X08
 	LDI		R22, 0x28
@@ -427,7 +428,6 @@ CONFECHA:
 	
 	LDI		R22, 0X20
 	OUT		PORTB, R22
-
 	;hacer de 1 a 12
 	MOV		R19, R17
 	MOV		R20, R18
@@ -571,7 +571,6 @@ ESFEBRERO1:
 	MOV		R14, R16
 	CLR		R15
 	RJMP	COMPROBAR3
-	
 ;------------MODO CONFIGURAR ALARMA----------	
 ALARMA:
 	LDI   R16, 0
@@ -591,7 +590,6 @@ ALARMA:
 	LDI		R16, 0XFF
 	CP		R12, R16
 	BREQ	AHOR24
-
 ;HORAS DECENAS
 	LDI		R16, 0X02
 	CP		R13, R16
@@ -668,7 +666,6 @@ ACON24HORAS:
 	CLR		R12
 AREG6:
 	CLR		R13
-
 ;-------------MULTIPLEXADO 2-----------
 COMPROBAR2:
 	CPI		R23, 0X00
@@ -680,13 +677,13 @@ COMPROBAR2:
 	CPI		R23, 0X03
 	BREQ	DA4
 	RJMP	LOOP
-
+;-------------Salidas display------------
 DA1:
 	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
 	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
 	
 	; Sumar el desplazamiento según el dígito a mostrar:
-	ADD		R30, R10              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	ADD		R30, R10              ; se ajusta la dirección
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X01
 	LDI		R22, 0X21
@@ -697,7 +694,7 @@ DA2:
 	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
 	
 	; Sumar el desplazamiento según el dígito a mostrar:
-	ADD		R30, R11              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	ADD		R30, R11              ; se ajusta la dirección
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo
 	LDI		R22, 0X22
@@ -708,7 +705,7 @@ DA3:
 	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
 	
 	; Sumar el desplazamiento según el dígito a mostrar:
-	ADD		R30, R12             ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	ADD		R30, R12             ; se ajusta la dirección
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04
 	LDI		R22, 0X24
@@ -718,29 +715,29 @@ DA4:
 	LDI		R30, LOW(TABLA7SEG<<1)   ; Cargar la parte baja de la dirección de la tabla
 	LDI		R31, HIGH(TABLA7SEG<<1)  ; Cargar la parte alta de la dirección de la tabla
 	; Sumar el desplazamiento según el dígito a mostrar:
-	ADD		R30, R13              ; Si RX es el dígito deseado, se ajusta la dirección (suponiendo que cada patrón es de 1 byte)
+	ADD		R30, R13              ; se ajusta la dirección
 	LPM		R24, Z
 	OUT		PORTD, R24          ; Enviar el patrón a PORTD para mostrarlo	LDI		R16, 0X04	LDI		R16, 0X08
 	LDI		R22, 0x28
 	OUT		PORTB, R22
 	RJMP	LOOP  
-
+;---------------Modo activar alarma------------
 ACTIVAR_ALARMA:
-	LDI   R16, 0
-    OUT   TCCR0B, R16
-	SBI		PORTD, 7
-	LDS		R25, TCNT2
-	SBRS	R25, 0
-	INC		R23
-	ANDI	R23, 0X03
-	
-	LDI		R22, 0X00
-	OUT		PORTB, R22
+	LDI		R16, 0
+    OUT		TCCR0B, R16
 
 	CPI		R21, 0X02
 	BREQ	REINICIAR21
 	CPI		R21, 0XFF
 	BREQ	REINICIARA1
+	CPI		R21, 0X01
+	BRNE	PONERB0
+	LDI		R22, 0XEF
+	OUT		PORTB, R22
+	RJMP	LOOP;COMPROBAR2
+PONERB0:
+	LDI		R22, 0X00
+	OUT		PORTB, R22
 	RJMP	LOOP;COMPROBAR2
 REINICIAR21:
 	LDI		R21, 0X01
@@ -785,16 +782,16 @@ ISR_PCINT1:
 	CPI		R28, 0X05
 	BREQ	PACALARMA
 	RETI
-VERHORA:
+VERHORA:	;Modo hora
 	SBI		PORTC, 5
 	CBI		PORTB, 5
 	RETI
-VERFECHA:
+VERFECHA:	;Modo fecha
 	CBI		PORTC, 5
 	LDI		R16, 0X20
 	OUT		PORTB, R16
 	RETI
-PHORA:
+PHORA:		;Modo configurar hora
 	SBI		PORTC, 5
 	CBI		PORTB, 5
 	SBRS	R29, 1
@@ -806,7 +803,7 @@ PHORA:
 	SBRS	R29, 4
 	DEC		R3
 	RETI
-PFECHA:
+PFECHA:		;Modo configurar fecha
 	CBI		PORTC, 5
 	LDI		R16, 0X20
 	OUT		PORTB, R16
@@ -819,7 +816,7 @@ PFECHA:
 	SBRS	R29, 4
 	DEC		R14
 	RETI
-PALARMA:
+PALARMA:	;Modo configurar alarma
 	SBI		PORTC, 5
 	LDI		R16, 0X20
 	OUT		PORTB, R16
@@ -833,7 +830,7 @@ PALARMA:
 	SBRS	R29, 4
 	DEC		R10
 	RETI
-PACALARMA:
+PACALARMA:	;Modo activar alarma
 	CBI		PORTC, 5
 	LDI		R16, 0X00
 	OUT		PORTB, R16
