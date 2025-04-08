@@ -176,7 +176,7 @@ ISR(TIMER2_OVF_vect) {
  11a:	11 24       	eor	r1, r1
  11c:	8f 93       	push	r24
  11e:	9f 93       	push	r25
-	TCNT2 = 100; // Frecuencia de actualización: ~1.04kHz (Timer ajustado para velocidad)
+	TCNT2 = 100; // Frecuencia de actualización
  120:	84 e6       	ldi	r24, 0x64	; 100
  122:	80 93 b2 00 	sts	0x00B2, r24	; 0x8000b2 <__TEXT_REGION_LENGTH__+0x7f80b2>
 	
@@ -192,7 +192,7 @@ ISR(TIMER2_OVF_vect) {
  12e:	80 91 11 01 	lds	r24, 0x0111	; 0x800111 <show_mode>
  132:	81 11       	cpse	r24, r1
  134:	19 c0       	rjmp	.+50     	; 0x168 <__vector_9+0x56>
-		// Mostrar displays 7-segmentos
+		// Mostrar displays 7 segmentos
 		if (current_display == 0) {
  136:	80 91 12 01 	lds	r24, 0x0112	; 0x800112 <current_display>
  13a:	81 11       	cpse	r24, r1
@@ -232,7 +232,7 @@ ISR(TIMER2_OVF_vect) {
  172:	85 b9       	out	0x05, r24	; 5
 	}
 	
-	// Control del LED de comparación (sincronizado)
+	// Control del LED de comparación
 	if (adc_value > contador) PORTB |= (1 << PB3);
  174:	90 91 10 01 	lds	r25, 0x0110	; 0x800110 <__data_end>
  178:	80 91 13 01 	lds	r24, 0x0113	; 0x800113 <contador>
@@ -247,7 +247,7 @@ ISR(TIMER2_OVF_vect) {
  18a:	87 7f       	andi	r24, 0xF7	; 247
  18c:	85 b9       	out	0x05, r24	; 5
 	
-	show_mode = !show_mode; // Alternar cada 0.48ms (total 2083Hz)
+	show_mode = !show_mode; // Alternar
  18e:	90 91 11 01 	lds	r25, 0x0111	; 0x800111 <show_mode>
  192:	81 e0       	ldi	r24, 0x01	; 1
  194:	91 11       	cpse	r25, r1
@@ -373,7 +373,7 @@ int main(void) {
  254:	83 60       	ori	r24, 0x03	; 3
  256:	88 b9       	out	0x08, r24	; 8
 
-	// Configuración Timer2 (prescaler 64, 16MHz)
+	// Configuración Timer2
 	TCCR2A = 0;
  258:	10 92 b0 00 	sts	0x00B0, r1	; 0x8000b0 <__TEXT_REGION_LENGTH__+0x7f80b0>
 	TCCR2B = (1 << CS22); // Prescaler 64
@@ -382,7 +382,7 @@ int main(void) {
 	TIMSK2 = (1 << TOIE2);
  262:	81 e0       	ldi	r24, 0x01	; 1
  264:	80 93 70 00 	sts	0x0070, r24	; 0x800070 <__TEXT_REGION_LENGTH__+0x7f8070>
-	TCNT2 = 100; // Overflow cada ~0.48ms
+	TCNT2 = 100; // Overflow
  268:	84 e6       	ldi	r24, 0x64	; 100
  26a:	80 93 b2 00 	sts	0x00B2, r24	; 0x8000b2 <__TEXT_REGION_LENGTH__+0x7f80b2>
 
