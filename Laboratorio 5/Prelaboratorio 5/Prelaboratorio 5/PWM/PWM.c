@@ -1,7 +1,7 @@
 #include "PWM.h"
 
 void initPWMFastA(uint8_t invertido, uint16_t prescaler) {
-	DDRD |= (1 << DDD6); // PD6 como salida PWM
+	DDRD |= (1 << PORTD6); // PD6 como salida PWM
 	
 	// Modo Fast PWM (TOP = 0xFF)
 	TCCR0A |= (1 << WGM01) | (1 << WGM00);
