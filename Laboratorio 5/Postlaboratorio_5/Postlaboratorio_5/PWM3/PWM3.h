@@ -9,8 +9,10 @@
 #ifndef PWM3_H_
 #define PWM3_H_
 
+#include <avr/io.h>
+#include <avr/interrupt.h>
 
-
-
+void initPWM3(uint16_t top, uint16_t prescaler);
+void setPWMDuty3(uint16_t duty);
 
 #endif /* PWM3_H_ */
