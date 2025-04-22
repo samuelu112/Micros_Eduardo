@@ -31,25 +31,25 @@ void initPWMFastB(uint8_t invertido2, uint16_t prescaler2) {
 	// Configuración adecuada según el prescaler deseado:
 	switch(prescaler2) {
 		case 1:
-		TCCR2B |= (1 << CS20);        // 001 -> clock/1
+		TCCR2B |= (1 << CS20);        // 001 = clock/1
 		break;
 		case 8:
-		TCCR2B |= (1 << CS21);        // 010 -> clock/8
+		TCCR2B |= (1 << CS21);        // 010 = clock/8
 		break;
 		case 32:
-		TCCR2B |= (1 << CS21) | (1 << CS20); // 011 -> clock/32
+		TCCR2B |= (1 << CS21) | (1 << CS20); // 011 = clock/32
 		break;
 		case 64:
-		TCCR2B |= (1 << CS22);        // 100 -> clock/64
+		TCCR2B |= (1 << CS22);        // 100 = clock/64
 		break;
 		case 128:
-		TCCR2B |= (1 << CS22) | (1 << CS20); // 101 -> clock/128
+		TCCR2B |= (1 << CS22) | (1 << CS20); // 101 = clock/128
 		break;
 		case 256:
-		TCCR2B |= (1 << CS22) | (1 << CS21); // 110 -> clock/256
+		TCCR2B |= (1 << CS22) | (1 << CS21); // 110 = clock/256
 		break;
 		case 1024:
-		TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20); // 111 -> clock/1024
+		TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20); // 111 = clock/1024
 		break;
 		default:
 		TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20); // Predeterminado: 1024

@@ -12,7 +12,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-void initPWM3(uint16_t top, uint8_t prescalerBits);
-void setPWMDuty3(uint16_t dutyValor);
+void initPWM3_manual(uint16_t top, uint8_t prescalerBits);
+void setPWM3_manual(uint8_t dutyValor);
 
 #endif /* PWM3_H_ */

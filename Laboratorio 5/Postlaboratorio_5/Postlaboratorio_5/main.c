@@ -12,7 +12,7 @@
 #include "PWM2/PWM2.h"   // Servo en PD3 (Timer2)
 #include "PWM3/PWM3.h"   // LED en PB1 (Timer1 manual PWM)
 
-// Variables globales para ADC
+// Variables para ADC
 uint8_t adc0_value, adc1_value, adc2_value;
 uint8_t current_channel = 0;
 
@@ -22,11 +22,10 @@ int main(void) {
 	cli();
 
 	// Servos:
-	initPWMFastA(non_invert, 1024);   // Timer0 ? PD6 (~16 ms)
-	initPWMFastB(non_invert, 1024);   // Timer2 ? PD3 (~16 ms)
-
-	// LED PWM manual: top=255, prescaler=64 ? f?976 Hz, resolución=8 bits
-	initPWM3(255, (1 << CS11) | (1 << CS10));
+	initPWMFastA(non_invert, 1024);   // Timer0 PD6
+	initPWMFastB(non_invert, 1024);   // Timer2 PD3
+	// Led  
+	initPWM3_manual(124, (1 << CS11));
 
 	// ADC con interrupciones (PC0, PC1, PC2)
 	initADC();
@@ -40,8 +39,8 @@ int main(void) {
 		updateDutyCycle(t0);
 		updateDutyCycle2(t1);
 
-		// LED: duty = adc2 directo (0–255)
-		setPWMDuty3(adc2_value);
+		// LED: duty = adc2
+		setPWM3_manual(adc2_value);
 
 		_delay_ms(10);
 	}
@@ -50,7 +49,7 @@ int main(void) {
 void initADC(void) {
 	ADMUX  = (1 << REFS0) | (1 << ADLAR) | (current_channel & 0x07); // Canal inicial ADC0
 	ADCSRA = (1 << ADEN) | (1 << ADIE) | (1 << ADATE) | (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
-	ADCSRB = 0; // Free running mode
+	ADCSRB = 0;
 	DIDR0  = (1 << ADC0D) | (1 << ADC1D) | (1 << ADC2D);
 	ADCSRA |= (1 << ADSC); // Iniciar primera conversión
 }

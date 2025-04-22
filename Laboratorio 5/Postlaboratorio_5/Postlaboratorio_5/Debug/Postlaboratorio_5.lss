@@ -3,31 +3,31 @@ Postlaboratorio_5.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  00000420  2**0
+  0 .data         00000000  00800100  00800100  00000410  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000003ac  00000000  00000000  00000074  2**1
+  1 .text         0000039c  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000004  00800100  00800100  00000420  2**0
+  2 .bss          00000006  00800100  00800100  00000410  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000420  2**0
+  3 .comment      00000030  00000000  00000000  00000410  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000450  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000440  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000000b8  00000000  00000000  00000490  2**0
+  5 .debug_aranges 000000b0  00000000  00000000  00000480  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000b3e  00000000  00000000  00000548  2**0
+  6 .debug_info   00000b4d  00000000  00000000  00000530  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 000008a6  00000000  00000000  00001086  2**0
+  7 .debug_abbrev 000008cb  00000000  00000000  0000107d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000006b5  00000000  00000000  0000192c  2**0
+  8 .debug_line   000006ae  00000000  00000000  00001948  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000013c  00000000  00000000  00001fe4  2**2
+  9 .debug_frame  00000120  00000000  00000000  00001ff8  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000004f1  00000000  00000000  00002120  2**0
+ 10 .debug_str    00000506  00000000  00000000  00002118  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000001c6  00000000  00000000  00002611  2**0
+ 11 .debug_loc    00000171  00000000  00000000  0000261e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000078  00000000  00000000  000027d7  2**0
+ 12 .debug_ranges 00000070  00000000  00000000  0000278f  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -44,8 +44,8 @@ Disassembly of section .text:
   20:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   24:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   28:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
-  2c:	0c 94 68 01 	jmp	0x2d0	; 0x2d0 <__vector_11>
-  30:	0c 94 77 01 	jmp	0x2ee	; 0x2ee <__vector_12>
+  2c:	0c 94 5a 01 	jmp	0x2b4	; 0x2b4 <__vector_11>
+  30:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   34:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   38:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   3c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
@@ -54,7 +54,7 @@ Disassembly of section .text:
   48:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   4c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   50:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
-  54:	0c 94 9f 00 	jmp	0x13e	; 0x13e <__vector_21>
+  54:	0c 94 9e 00 	jmp	0x13c	; 0x13c <__vector_21>
   58:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   5c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
   60:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
@@ -78,11 +78,11 @@ Disassembly of section .text:
   7c:	1d 92       	st	X+, r1
 
 0000007e <.do_clear_bss_start>:
-  7e:	a4 30       	cpi	r26, 0x04	; 4
+  7e:	a6 30       	cpi	r26, 0x06	; 6
   80:	b2 07       	cpc	r27, r18
   82:	e1 f7       	brne	.-8      	; 0x7c <.do_clear_bss_loop>
   84:	0e 94 5b 00 	call	0xb6	; 0xb6 <main>
-  88:	0c 94 d4 01 	jmp	0x3a8	; 0x3a8 <_exit>
+  88:	0c 94 cc 01 	jmp	0x398	; 0x398 <_exit>
 
 0000008c <__bad_interrupt>:
   8c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -103,7 +103,7 @@ void initADC(void) {
   9e:	f0 e0       	ldi	r31, 0x00	; 0
   a0:	8f ea       	ldi	r24, 0xAF	; 175
   a2:	80 83       	st	Z, r24
-	ADCSRB = 0; // Free running mode
+	ADCSRB = 0;
   a4:	10 92 7b 00 	sts	0x007B, r1	; 0x80007b <__TEXT_REGION_LENGTH__+0x7f807b>
 	DIDR0  = (1 << ADC0D) | (1 << ADC1D) | (1 << ADC2D);
   a8:	87 e0       	ldi	r24, 0x07	; 7
@@ -124,23 +124,22 @@ int main(void) {
   b6:	f8 94       	cli
 
 	// Servos:
-	initPWMFastA(non_invert, 1024);   // Timer0 ? PD6 (~16 ms)
+	initPWMFastA(non_invert, 1024);   // Timer0 PD6
   b8:	60 e0       	ldi	r22, 0x00	; 0
   ba:	74 e0       	ldi	r23, 0x04	; 4
   bc:	80 e0       	ldi	r24, 0x00	; 0
-  be:	0e 94 86 01 	call	0x30c	; 0x30c <initPWMFastA>
-	initPWMFastB(non_invert, 1024);   // Timer2 ? PD3 (~16 ms)
+  be:	0e 94 7e 01 	call	0x2fc	; 0x2fc <initPWMFastA>
+	initPWMFastB(non_invert, 1024);   // Timer2 PD3
   c2:	60 e0       	ldi	r22, 0x00	; 0
   c4:	74 e0       	ldi	r23, 0x04	; 4
   c6:	80 e0       	ldi	r24, 0x00	; 0
-  c8:	0e 94 d8 00 	call	0x1b0	; 0x1b0 <initPWMFastB>
-
-	// LED PWM manual: top=255, prescaler=64 ? f?976 Hz, resolución=8 bits
-	initPWM3(255, (1 << CS11) | (1 << CS10));
-  cc:	63 e0       	ldi	r22, 0x03	; 3
-  ce:	8f ef       	ldi	r24, 0xFF	; 255
+  c8:	0e 94 d7 00 	call	0x1ae	; 0x1ae <initPWMFastB>
+	// Led  
+	initPWM3_manual(124, (1 << CS11));
+  cc:	62 e0       	ldi	r22, 0x02	; 2
+  ce:	8c e7       	ldi	r24, 0x7C	; 124
   d0:	90 e0       	ldi	r25, 0x00	; 0
-  d2:	0e 94 43 01 	call	0x286	; 0x286 <initPWM3>
+  d2:	0e 94 42 01 	call	0x284	; 0x284 <initPWM3_manual>
 
 	// ADC con interrupciones (PC0, PC1, PC2)
 	initADC();
@@ -152,14 +151,14 @@ int main(void) {
 	while (1) {
 		// Mapear para servos (ticks 9–37)
 		uint8_t t0 = 9  + ((uint16_t)adc0_value * 28) / 255;
-  dc:	20 91 01 01 	lds	r18, 0x0101	; 0x800101 <adc0_value>
+  dc:	20 91 03 01 	lds	r18, 0x0103	; 0x800103 <adc0_value>
   e0:	4c e1       	ldi	r20, 0x1C	; 28
   e2:	42 9f       	mul	r20, r18
   e4:	90 01       	movw	r18, r0
   e6:	11 24       	eor	r1, r1
   e8:	a1 e8       	ldi	r26, 0x81	; 129
   ea:	b0 e8       	ldi	r27, 0x80	; 128
-  ec:	0e 94 c5 01 	call	0x38a	; 0x38a <__umulhisi3>
+  ec:	0e 94 bd 01 	call	0x37a	; 0x37a <__umulhisi3>
   f0:	fc 01       	movw	r30, r24
   f2:	ee 0f       	add	r30, r30
   f4:	ef 2f       	mov	r30, r31
@@ -167,11 +166,11 @@ int main(void) {
   f8:	ff 0b       	sbc	r31, r31
   fa:	f1 95       	neg	r31
 		uint8_t t1 = 9  + ((uint16_t)adc1_value * 28) / 255;
-  fc:	20 91 02 01 	lds	r18, 0x0102	; 0x800102 <adc1_value>
+  fc:	20 91 04 01 	lds	r18, 0x0104	; 0x800104 <adc1_value>
  100:	42 9f       	mul	r20, r18
  102:	90 01       	movw	r18, r0
  104:	11 24       	eor	r1, r1
- 106:	0e 94 c5 01 	call	0x38a	; 0x38a <__umulhisi3>
+ 106:	0e 94 bd 01 	call	0x37a	; 0x37a <__umulhisi3>
  10a:	88 0f       	add	r24, r24
  10c:	89 2f       	mov	r24, r25
  10e:	88 1f       	adc	r24, r24
@@ -182,464 +181,478 @@ int main(void) {
 		updateDutyCycle(t0);
  118:	89 e0       	ldi	r24, 0x09	; 9
  11a:	8e 0f       	add	r24, r30
- 11c:	0e 94 c3 01 	call	0x386	; 0x386 <updateDutyCycle>
+ 11c:	0e 94 bb 01 	call	0x376	; 0x376 <updateDutyCycle>
 		updateDutyCycle2(t1);
  120:	8c 2f       	mov	r24, r28
- 122:	0e 94 40 01 	call	0x280	; 0x280 <updateDutyCycle2>
+ 122:	0e 94 3f 01 	call	0x27e	; 0x27e <updateDutyCycle2>
 
-		// LED: duty = adc2 directo (0–255)
-		setPWMDuty3(adc2_value);
- 126:	80 91 03 01 	lds	r24, 0x0103	; 0x800103 <adc2_value>
- 12a:	90 e0       	ldi	r25, 0x00	; 0
- 12c:	0e 94 58 01 	call	0x2b0	; 0x2b0 <setPWMDuty3>
+		// LED: duty = adc2
+		setPWM3_manual(adc2_value);
+ 126:	80 91 05 01 	lds	r24, 0x0105	; 0x800105 <adc2_value>
+ 12a:	0e 94 57 01 	call	0x2ae	; 0x2ae <setPWM3_manual>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 130:	8f e3       	ldi	r24, 0x3F	; 63
- 132:	9c e9       	ldi	r25, 0x9C	; 156
- 134:	01 97       	sbiw	r24, 0x01	; 1
- 136:	f1 f7       	brne	.-4      	; 0x134 <main+0x7e>
- 138:	00 c0       	rjmp	.+0      	; 0x13a <main+0x84>
- 13a:	00 00       	nop
- 13c:	cf cf       	rjmp	.-98     	; 0xdc <main+0x26>
+ 12e:	8f e3       	ldi	r24, 0x3F	; 63
+ 130:	9c e9       	ldi	r25, 0x9C	; 156
+ 132:	01 97       	sbiw	r24, 0x01	; 1
+ 134:	f1 f7       	brne	.-4      	; 0x132 <main+0x7c>
+ 136:	00 c0       	rjmp	.+0      	; 0x138 <main+0x82>
+ 138:	00 00       	nop
+ 13a:	d0 cf       	rjmp	.-96     	; 0xdc <main+0x26>
 
-0000013e <__vector_21>:
-	ADCSRB = 0; // Free running mode
+0000013c <__vector_21>:
+	ADCSRB = 0;
 	DIDR0  = (1 << ADC0D) | (1 << ADC1D) | (1 << ADC2D);
 	ADCSRA |= (1 << ADSC); // Iniciar primera conversión
 }
 
 ISR(ADC_vect) {
- 13e:	1f 92       	push	r1
- 140:	0f 92       	push	r0
- 142:	0f b6       	in	r0, 0x3f	; 63
- 144:	0f 92       	push	r0
- 146:	11 24       	eor	r1, r1
- 148:	8f 93       	push	r24
- 14a:	ef 93       	push	r30
- 14c:	ff 93       	push	r31
+ 13c:	1f 92       	push	r1
+ 13e:	0f 92       	push	r0
+ 140:	0f b6       	in	r0, 0x3f	; 63
+ 142:	0f 92       	push	r0
+ 144:	11 24       	eor	r1, r1
+ 146:	8f 93       	push	r24
+ 148:	ef 93       	push	r30
+ 14a:	ff 93       	push	r31
 	switch(current_channel) {
- 14e:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
- 152:	81 30       	cpi	r24, 0x01	; 1
- 154:	61 f0       	breq	.+24     	; 0x16e <__vector_21+0x30>
- 156:	18 f0       	brcs	.+6      	; 0x15e <__vector_21+0x20>
- 158:	82 30       	cpi	r24, 0x02	; 2
- 15a:	89 f0       	breq	.+34     	; 0x17e <__vector_21+0x40>
- 15c:	16 c0       	rjmp	.+44     	; 0x18a <__vector_21+0x4c>
+ 14c:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 150:	81 30       	cpi	r24, 0x01	; 1
+ 152:	61 f0       	breq	.+24     	; 0x16c <__vector_21+0x30>
+ 154:	18 f0       	brcs	.+6      	; 0x15c <__vector_21+0x20>
+ 156:	82 30       	cpi	r24, 0x02	; 2
+ 158:	89 f0       	breq	.+34     	; 0x17c <__vector_21+0x40>
+ 15a:	16 c0       	rjmp	.+44     	; 0x188 <__vector_21+0x4c>
 		case 0:
 		adc0_value = ADCH; // Guardar ADC0
- 15e:	80 91 79 00 	lds	r24, 0x0079	; 0x800079 <__TEXT_REGION_LENGTH__+0x7f8079>
- 162:	80 93 01 01 	sts	0x0101, r24	; 0x800101 <adc0_value>
+ 15c:	80 91 79 00 	lds	r24, 0x0079	; 0x800079 <__TEXT_REGION_LENGTH__+0x7f8079>
+ 160:	80 93 03 01 	sts	0x0103, r24	; 0x800103 <adc0_value>
 		current_channel = 1;
- 166:	81 e0       	ldi	r24, 0x01	; 1
- 168:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 164:	81 e0       	ldi	r24, 0x01	; 1
+ 166:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
 		break;
- 16c:	0e c0       	rjmp	.+28     	; 0x18a <__vector_21+0x4c>
+ 16a:	0e c0       	rjmp	.+28     	; 0x188 <__vector_21+0x4c>
 		case 1:
 		adc1_value = ADCH; // Guardar ADC1
- 16e:	80 91 79 00 	lds	r24, 0x0079	; 0x800079 <__TEXT_REGION_LENGTH__+0x7f8079>
- 172:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <adc1_value>
+ 16c:	80 91 79 00 	lds	r24, 0x0079	; 0x800079 <__TEXT_REGION_LENGTH__+0x7f8079>
+ 170:	80 93 04 01 	sts	0x0104, r24	; 0x800104 <adc1_value>
 		current_channel = 2;
- 176:	82 e0       	ldi	r24, 0x02	; 2
- 178:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 174:	82 e0       	ldi	r24, 0x02	; 2
+ 176:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
 		break;
- 17c:	06 c0       	rjmp	.+12     	; 0x18a <__vector_21+0x4c>
+ 17a:	06 c0       	rjmp	.+12     	; 0x188 <__vector_21+0x4c>
 		case 2:
 		adc2_value = ADCH; // Guardar ADC2
- 17e:	80 91 79 00 	lds	r24, 0x0079	; 0x800079 <__TEXT_REGION_LENGTH__+0x7f8079>
- 182:	80 93 03 01 	sts	0x0103, r24	; 0x800103 <adc2_value>
+ 17c:	80 91 79 00 	lds	r24, 0x0079	; 0x800079 <__TEXT_REGION_LENGTH__+0x7f8079>
+ 180:	80 93 05 01 	sts	0x0105, r24	; 0x800105 <adc2_value>
 		current_channel = 0;
- 186:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 184:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <__DATA_REGION_ORIGIN__>
 		break;
 	}
 	ADMUX = (1 << REFS0) | (1 << ADLAR) | (current_channel & 0x07); // Cambiar canal
- 18a:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
- 18e:	87 70       	andi	r24, 0x07	; 7
- 190:	80 66       	ori	r24, 0x60	; 96
- 192:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__TEXT_REGION_LENGTH__+0x7f807c>
+ 188:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
+ 18c:	87 70       	andi	r24, 0x07	; 7
+ 18e:	80 66       	ori	r24, 0x60	; 96
+ 190:	80 93 7c 00 	sts	0x007C, r24	; 0x80007c <__TEXT_REGION_LENGTH__+0x7f807c>
 	ADCSRA |= (1 << ADSC); // Iniciar nueva conversión
- 196:	ea e7       	ldi	r30, 0x7A	; 122
- 198:	f0 e0       	ldi	r31, 0x00	; 0
- 19a:	80 81       	ld	r24, Z
- 19c:	80 64       	ori	r24, 0x40	; 64
- 19e:	80 83       	st	Z, r24
+ 194:	ea e7       	ldi	r30, 0x7A	; 122
+ 196:	f0 e0       	ldi	r31, 0x00	; 0
+ 198:	80 81       	ld	r24, Z
+ 19a:	80 64       	ori	r24, 0x40	; 64
+ 19c:	80 83       	st	Z, r24
 }
- 1a0:	ff 91       	pop	r31
- 1a2:	ef 91       	pop	r30
- 1a4:	8f 91       	pop	r24
- 1a6:	0f 90       	pop	r0
- 1a8:	0f be       	out	0x3f, r0	; 63
- 1aa:	0f 90       	pop	r0
- 1ac:	1f 90       	pop	r1
- 1ae:	18 95       	reti
+ 19e:	ff 91       	pop	r31
+ 1a0:	ef 91       	pop	r30
+ 1a2:	8f 91       	pop	r24
+ 1a4:	0f 90       	pop	r0
+ 1a6:	0f be       	out	0x3f, r0	; 63
+ 1a8:	0f 90       	pop	r0
+ 1aa:	1f 90       	pop	r1
+ 1ac:	18 95       	reti
 
-000001b0 <initPWMFastB>:
+000001ae <initPWMFastB>:
  */ 
 #include "PWM2.h"
 
 void initPWMFastB(uint8_t invertido2, uint16_t prescaler2) {
 	// Configurar PD3 (OC2B) como salida.
 	DDRD |= (1 << DDD3);
- 1b0:	9a b1       	in	r25, 0x0a	; 10
- 1b2:	98 60       	ori	r25, 0x08	; 8
- 1b4:	9a b9       	out	0x0a, r25	; 10
+ 1ae:	9a b1       	in	r25, 0x0a	; 10
+ 1b0:	98 60       	ori	r25, 0x08	; 8
+ 1b2:	9a b9       	out	0x0a, r25	; 10
 	
 	// Limpiar registros de Timer2
 	TCCR2A = 0;
- 1b6:	e0 eb       	ldi	r30, 0xB0	; 176
- 1b8:	f0 e0       	ldi	r31, 0x00	; 0
- 1ba:	10 82       	st	Z, r1
+ 1b4:	e0 eb       	ldi	r30, 0xB0	; 176
+ 1b6:	f0 e0       	ldi	r31, 0x00	; 0
+ 1b8:	10 82       	st	Z, r1
 	TCCR2B = 0;
- 1bc:	10 92 b1 00 	sts	0x00B1, r1	; 0x8000b1 <__TEXT_REGION_LENGTH__+0x7f80b1>
+ 1ba:	10 92 b1 00 	sts	0x00B1, r1	; 0x8000b1 <__TEXT_REGION_LENGTH__+0x7f80b1>
 	
 	// Configurar modo Fast PWM para Timer2:
 	// Se activa el modo Fast PWM con TOP
 	TCCR2A |= (1 << WGM21) | (1 << WGM20);
- 1c0:	90 81       	ld	r25, Z
- 1c2:	93 60       	ori	r25, 0x03	; 3
- 1c4:	90 83       	st	Z, r25
+ 1be:	90 81       	ld	r25, Z
+ 1c0:	93 60       	ori	r25, 0x03	; 3
+ 1c2:	90 83       	st	Z, r25
 	
 	// Configurar la salida en el canal OC2B (PD3)
 	if (invertido2 == invert) {
- 1c6:	81 30       	cpi	r24, 0x01	; 1
- 1c8:	21 f4       	brne	.+8      	; 0x1d2 <initPWMFastB+0x22>
+ 1c4:	81 30       	cpi	r24, 0x01	; 1
+ 1c6:	21 f4       	brne	.+8      	; 0x1d0 <initPWMFastB+0x22>
 		TCCR2A |= (1 << COM2B1) | (1 << COM2B0);
- 1ca:	80 81       	ld	r24, Z
- 1cc:	80 63       	ori	r24, 0x30	; 48
- 1ce:	80 83       	st	Z, r24
- 1d0:	08 c0       	rjmp	.+16     	; 0x1e2 <initPWMFastB+0x32>
+ 1c8:	80 81       	ld	r24, Z
+ 1ca:	80 63       	ori	r24, 0x30	; 48
+ 1cc:	80 83       	st	Z, r24
+ 1ce:	08 c0       	rjmp	.+16     	; 0x1e0 <initPWMFastB+0x32>
 		} else {
 		TCCR2A |= (1 << COM2B1);
- 1d2:	e0 eb       	ldi	r30, 0xB0	; 176
- 1d4:	f0 e0       	ldi	r31, 0x00	; 0
- 1d6:	80 81       	ld	r24, Z
- 1d8:	80 62       	ori	r24, 0x20	; 32
- 1da:	80 83       	st	Z, r24
+ 1d0:	e0 eb       	ldi	r30, 0xB0	; 176
+ 1d2:	f0 e0       	ldi	r31, 0x00	; 0
+ 1d4:	80 81       	ld	r24, Z
+ 1d6:	80 62       	ori	r24, 0x20	; 32
+ 1d8:	80 83       	st	Z, r24
 		TCCR2A &= ~(1 << COM2B0);
- 1dc:	80 81       	ld	r24, Z
- 1de:	8f 7e       	andi	r24, 0xEF	; 239
- 1e0:	80 83       	st	Z, r24
+ 1da:	80 81       	ld	r24, Z
+ 1dc:	8f 7e       	andi	r24, 0xEF	; 239
+ 1de:	80 83       	st	Z, r24
 	}
 	
 	// Limpiar bits de prescaler
 	TCCR2B &= ~((1 << CS22) | (1 << CS21) | (1 << CS20));
- 1e2:	e1 eb       	ldi	r30, 0xB1	; 177
- 1e4:	f0 e0       	ldi	r31, 0x00	; 0
- 1e6:	80 81       	ld	r24, Z
- 1e8:	88 7f       	andi	r24, 0xF8	; 248
- 1ea:	80 83       	st	Z, r24
+ 1e0:	e1 eb       	ldi	r30, 0xB1	; 177
+ 1e2:	f0 e0       	ldi	r31, 0x00	; 0
+ 1e4:	80 81       	ld	r24, Z
+ 1e6:	88 7f       	andi	r24, 0xF8	; 248
+ 1e8:	80 83       	st	Z, r24
 	// Configuración adecuada según el prescaler deseado:
 	switch(prescaler2) {
- 1ec:	60 34       	cpi	r22, 0x40	; 64
- 1ee:	71 05       	cpc	r23, r1
- 1f0:	49 f1       	breq	.+82     	; 0x244 <initPWMFastB+0x94>
- 1f2:	50 f4       	brcc	.+20     	; 0x208 <initPWMFastB+0x58>
- 1f4:	68 30       	cpi	r22, 0x08	; 8
- 1f6:	71 05       	cpc	r23, r1
- 1f8:	c9 f0       	breq	.+50     	; 0x22c <initPWMFastB+0x7c>
- 1fa:	60 32       	cpi	r22, 0x20	; 32
- 1fc:	71 05       	cpc	r23, r1
- 1fe:	e1 f0       	breq	.+56     	; 0x238 <initPWMFastB+0x88>
- 200:	61 30       	cpi	r22, 0x01	; 1
- 202:	71 05       	cpc	r23, r1
- 204:	b9 f5       	brne	.+110    	; 0x274 <initPWMFastB+0xc4>
- 206:	0c c0       	rjmp	.+24     	; 0x220 <initPWMFastB+0x70>
- 208:	61 15       	cp	r22, r1
- 20a:	81 e0       	ldi	r24, 0x01	; 1
- 20c:	78 07       	cpc	r23, r24
- 20e:	31 f1       	breq	.+76     	; 0x25c <initPWMFastB+0xac>
- 210:	61 15       	cp	r22, r1
- 212:	84 e0       	ldi	r24, 0x04	; 4
- 214:	78 07       	cpc	r23, r24
- 216:	41 f1       	breq	.+80     	; 0x268 <initPWMFastB+0xb8>
- 218:	60 38       	cpi	r22, 0x80	; 128
- 21a:	71 05       	cpc	r23, r1
- 21c:	59 f5       	brne	.+86     	; 0x274 <initPWMFastB+0xc4>
- 21e:	18 c0       	rjmp	.+48     	; 0x250 <initPWMFastB+0xa0>
+ 1ea:	60 34       	cpi	r22, 0x40	; 64
+ 1ec:	71 05       	cpc	r23, r1
+ 1ee:	49 f1       	breq	.+82     	; 0x242 <initPWMFastB+0x94>
+ 1f0:	50 f4       	brcc	.+20     	; 0x206 <initPWMFastB+0x58>
+ 1f2:	68 30       	cpi	r22, 0x08	; 8
+ 1f4:	71 05       	cpc	r23, r1
+ 1f6:	c9 f0       	breq	.+50     	; 0x22a <initPWMFastB+0x7c>
+ 1f8:	60 32       	cpi	r22, 0x20	; 32
+ 1fa:	71 05       	cpc	r23, r1
+ 1fc:	e1 f0       	breq	.+56     	; 0x236 <initPWMFastB+0x88>
+ 1fe:	61 30       	cpi	r22, 0x01	; 1
+ 200:	71 05       	cpc	r23, r1
+ 202:	b9 f5       	brne	.+110    	; 0x272 <initPWMFastB+0xc4>
+ 204:	0c c0       	rjmp	.+24     	; 0x21e <initPWMFastB+0x70>
+ 206:	61 15       	cp	r22, r1
+ 208:	81 e0       	ldi	r24, 0x01	; 1
+ 20a:	78 07       	cpc	r23, r24
+ 20c:	31 f1       	breq	.+76     	; 0x25a <initPWMFastB+0xac>
+ 20e:	61 15       	cp	r22, r1
+ 210:	84 e0       	ldi	r24, 0x04	; 4
+ 212:	78 07       	cpc	r23, r24
+ 214:	41 f1       	breq	.+80     	; 0x266 <initPWMFastB+0xb8>
+ 216:	60 38       	cpi	r22, 0x80	; 128
+ 218:	71 05       	cpc	r23, r1
+ 21a:	59 f5       	brne	.+86     	; 0x272 <initPWMFastB+0xc4>
+ 21c:	18 c0       	rjmp	.+48     	; 0x24e <initPWMFastB+0xa0>
 		case 1:
-		TCCR2B |= (1 << CS20);        // 001 -> clock/1
- 220:	e1 eb       	ldi	r30, 0xB1	; 177
- 222:	f0 e0       	ldi	r31, 0x00	; 0
- 224:	80 81       	ld	r24, Z
- 226:	81 60       	ori	r24, 0x01	; 1
- 228:	80 83       	st	Z, r24
+		TCCR2B |= (1 << CS20);        // 001 = clock/1
+ 21e:	e1 eb       	ldi	r30, 0xB1	; 177
+ 220:	f0 e0       	ldi	r31, 0x00	; 0
+ 222:	80 81       	ld	r24, Z
+ 224:	81 60       	ori	r24, 0x01	; 1
+ 226:	80 83       	st	Z, r24
 		break;
- 22a:	08 95       	ret
+ 228:	08 95       	ret
 		case 8:
-		TCCR2B |= (1 << CS21);        // 010 -> clock/8
- 22c:	e1 eb       	ldi	r30, 0xB1	; 177
- 22e:	f0 e0       	ldi	r31, 0x00	; 0
- 230:	80 81       	ld	r24, Z
- 232:	82 60       	ori	r24, 0x02	; 2
- 234:	80 83       	st	Z, r24
+		TCCR2B |= (1 << CS21);        // 010 = clock/8
+ 22a:	e1 eb       	ldi	r30, 0xB1	; 177
+ 22c:	f0 e0       	ldi	r31, 0x00	; 0
+ 22e:	80 81       	ld	r24, Z
+ 230:	82 60       	ori	r24, 0x02	; 2
+ 232:	80 83       	st	Z, r24
 		break;
- 236:	08 95       	ret
+ 234:	08 95       	ret
 		case 32:
-		TCCR2B |= (1 << CS21) | (1 << CS20); // 011 -> clock/32
- 238:	e1 eb       	ldi	r30, 0xB1	; 177
- 23a:	f0 e0       	ldi	r31, 0x00	; 0
- 23c:	80 81       	ld	r24, Z
- 23e:	83 60       	ori	r24, 0x03	; 3
- 240:	80 83       	st	Z, r24
+		TCCR2B |= (1 << CS21) | (1 << CS20); // 011 = clock/32
+ 236:	e1 eb       	ldi	r30, 0xB1	; 177
+ 238:	f0 e0       	ldi	r31, 0x00	; 0
+ 23a:	80 81       	ld	r24, Z
+ 23c:	83 60       	ori	r24, 0x03	; 3
+ 23e:	80 83       	st	Z, r24
 		break;
- 242:	08 95       	ret
+ 240:	08 95       	ret
 		case 64:
-		TCCR2B |= (1 << CS22);        // 100 -> clock/64
- 244:	e1 eb       	ldi	r30, 0xB1	; 177
- 246:	f0 e0       	ldi	r31, 0x00	; 0
- 248:	80 81       	ld	r24, Z
- 24a:	84 60       	ori	r24, 0x04	; 4
- 24c:	80 83       	st	Z, r24
+		TCCR2B |= (1 << CS22);        // 100 = clock/64
+ 242:	e1 eb       	ldi	r30, 0xB1	; 177
+ 244:	f0 e0       	ldi	r31, 0x00	; 0
+ 246:	80 81       	ld	r24, Z
+ 248:	84 60       	ori	r24, 0x04	; 4
+ 24a:	80 83       	st	Z, r24
 		break;
- 24e:	08 95       	ret
+ 24c:	08 95       	ret
 		case 128:
-		TCCR2B |= (1 << CS22) | (1 << CS20); // 101 -> clock/128
- 250:	e1 eb       	ldi	r30, 0xB1	; 177
- 252:	f0 e0       	ldi	r31, 0x00	; 0
- 254:	80 81       	ld	r24, Z
- 256:	85 60       	ori	r24, 0x05	; 5
- 258:	80 83       	st	Z, r24
+		TCCR2B |= (1 << CS22) | (1 << CS20); // 101 = clock/128
+ 24e:	e1 eb       	ldi	r30, 0xB1	; 177
+ 250:	f0 e0       	ldi	r31, 0x00	; 0
+ 252:	80 81       	ld	r24, Z
+ 254:	85 60       	ori	r24, 0x05	; 5
+ 256:	80 83       	st	Z, r24
 		break;
- 25a:	08 95       	ret
+ 258:	08 95       	ret
 		case 256:
-		TCCR2B |= (1 << CS22) | (1 << CS21); // 110 -> clock/256
- 25c:	e1 eb       	ldi	r30, 0xB1	; 177
- 25e:	f0 e0       	ldi	r31, 0x00	; 0
- 260:	80 81       	ld	r24, Z
- 262:	86 60       	ori	r24, 0x06	; 6
- 264:	80 83       	st	Z, r24
+		TCCR2B |= (1 << CS22) | (1 << CS21); // 110 = clock/256
+ 25a:	e1 eb       	ldi	r30, 0xB1	; 177
+ 25c:	f0 e0       	ldi	r31, 0x00	; 0
+ 25e:	80 81       	ld	r24, Z
+ 260:	86 60       	ori	r24, 0x06	; 6
+ 262:	80 83       	st	Z, r24
 		break;
- 266:	08 95       	ret
+ 264:	08 95       	ret
 		case 1024:
-		TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20); // 111 -> clock/1024
- 268:	e1 eb       	ldi	r30, 0xB1	; 177
- 26a:	f0 e0       	ldi	r31, 0x00	; 0
- 26c:	80 81       	ld	r24, Z
- 26e:	87 60       	ori	r24, 0x07	; 7
- 270:	80 83       	st	Z, r24
+		TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20); // 111 = clock/1024
+ 266:	e1 eb       	ldi	r30, 0xB1	; 177
+ 268:	f0 e0       	ldi	r31, 0x00	; 0
+ 26a:	80 81       	ld	r24, Z
+ 26c:	87 60       	ori	r24, 0x07	; 7
+ 26e:	80 83       	st	Z, r24
 		break;
- 272:	08 95       	ret
+ 270:	08 95       	ret
 		default:
 		TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20); // Predeterminado: 1024
- 274:	e1 eb       	ldi	r30, 0xB1	; 177
- 276:	f0 e0       	ldi	r31, 0x00	; 0
- 278:	80 81       	ld	r24, Z
- 27a:	87 60       	ori	r24, 0x07	; 7
- 27c:	80 83       	st	Z, r24
- 27e:	08 95       	ret
+ 272:	e1 eb       	ldi	r30, 0xB1	; 177
+ 274:	f0 e0       	ldi	r31, 0x00	; 0
+ 276:	80 81       	ld	r24, Z
+ 278:	87 60       	ori	r24, 0x07	; 7
+ 27a:	80 83       	st	Z, r24
+ 27c:	08 95       	ret
 
-00000280 <updateDutyCycle2>:
+0000027e <updateDutyCycle2>:
 	}
 }
 
 void updateDutyCycle2(uint8_t ticks2) {
 	// Actualiza el OCR2B, OC2B = PD3.
 	OCR2B = ticks2;
- 280:	80 93 b4 00 	sts	0x00B4, r24	; 0x8000b4 <__TEXT_REGION_LENGTH__+0x7f80b4>
- 284:	08 95       	ret
+ 27e:	80 93 b4 00 	sts	0x00B4, r24	; 0x8000b4 <__TEXT_REGION_LENGTH__+0x7f80b4>
+ 282:	08 95       	ret
 
-00000286 <initPWM3>:
-#include "PWM3.h"
+00000284 <initPWM3_manual>:
+static volatile uint8_t pwm3_counter = 0;
+// Señal
+static volatile uint8_t pwm3_duty    = 0;
 
-void initPWM3(uint16_t top, uint8_t prescalerBits) {
- 286:	9c 01       	movw	r18, r24
-	DDRB |= (1 << DDB1); // PB1 como salida
- 288:	94 b1       	in	r25, 0x04	; 4
- 28a:	92 60       	ori	r25, 0x02	; 2
- 28c:	94 b9       	out	0x04, r25	; 4
+void initPWM3_manual(uint16_t top, uint8_t prescalerBits)
+{
+ 284:	9c 01       	movw	r18, r24
+	// Configura PB1 como salida del LED
+	DDRB |= (1 << DDB1);  
+ 286:	94 b1       	in	r25, 0x04	; 4
+ 288:	92 60       	ori	r25, 0x02	; 2
+ 28a:	94 b9       	out	0x04, r25	; 4
+
+	// Modo CTC: WGM13:0 = 0100, WGM12 = 1
 	TCCR1A = 0;
- 28e:	10 92 80 00 	sts	0x0080, r1	; 0x800080 <__TEXT_REGION_LENGTH__+0x7f8080>
-	TCCR1B = (1 << WGM12); // Modo CTC
- 292:	e1 e8       	ldi	r30, 0x81	; 129
- 294:	f0 e0       	ldi	r31, 0x00	; 0
- 296:	88 e0       	ldi	r24, 0x08	; 8
- 298:	80 83       	st	Z, r24
-	OCR1A = top;
- 29a:	30 93 89 00 	sts	0x0089, r19	; 0x800089 <__TEXT_REGION_LENGTH__+0x7f8089>
- 29e:	20 93 88 00 	sts	0x0088, r18	; 0x800088 <__TEXT_REGION_LENGTH__+0x7f8088>
-	TIMSK1 = (1 << OCIE1A) | (1 << OCIE1B);
- 2a2:	86 e0       	ldi	r24, 0x06	; 6
- 2a4:	80 93 6f 00 	sts	0x006F, r24	; 0x80006f <__TEXT_REGION_LENGTH__+0x7f806f>
-	TCCR1B |= prescalerBits;
- 2a8:	80 81       	ld	r24, Z
- 2aa:	68 2b       	or	r22, r24
- 2ac:	60 83       	st	Z, r22
- 2ae:	08 95       	ret
+ 28c:	10 92 80 00 	sts	0x0080, r1	; 0x800080 <__TEXT_REGION_LENGTH__+0x7f8080>
+	TCCR1B = (1 << WGM12) | prescalerBits;  
+ 290:	68 60       	ori	r22, 0x08	; 8
+ 292:	60 93 81 00 	sts	0x0081, r22	; 0x800081 <__TEXT_REGION_LENGTH__+0x7f8081>
 
-000002b0 <setPWMDuty3>:
+	// Fija TOP en OCR1A = periodo de interrupción
+	OCR1A = top;  
+ 296:	30 93 89 00 	sts	0x0089, r19	; 0x800089 <__TEXT_REGION_LENGTH__+0x7f8089>
+ 29a:	20 93 88 00 	sts	0x0088, r18	; 0x800088 <__TEXT_REGION_LENGTH__+0x7f8088>
+
+	// Habilita interrupción Compare Match A
+	TIMSK1 = (1 << OCIE1A);  
+ 29e:	82 e0       	ldi	r24, 0x02	; 2
+ 2a0:	80 93 6f 00 	sts	0x006F, r24	; 0x80006f <__TEXT_REGION_LENGTH__+0x7f806f>
+
+	// Inicializa el contador de software
+	pwm3_counter = 0;
+ 2a4:	10 92 02 01 	sts	0x0102, r1	; 0x800102 <pwm3_counter>
+	pwm3_duty    = 0;
+ 2a8:	10 92 01 01 	sts	0x0101, r1	; 0x800101 <pwm3_duty>
+ 2ac:	08 95       	ret
+
+000002ae <setPWM3_manual>:
 }
 
-void setPWMDuty3(uint16_t dutyValor) {
-	OCR1B = (dutyValor > OCR1A) ? OCR1A : dutyValor;
- 2b0:	20 91 88 00 	lds	r18, 0x0088	; 0x800088 <__TEXT_REGION_LENGTH__+0x7f8088>
- 2b4:	30 91 89 00 	lds	r19, 0x0089	; 0x800089 <__TEXT_REGION_LENGTH__+0x7f8089>
- 2b8:	28 17       	cp	r18, r24
- 2ba:	39 07       	cpc	r19, r25
- 2bc:	20 f4       	brcc	.+8      	; 0x2c6 <setPWMDuty3+0x16>
- 2be:	80 91 88 00 	lds	r24, 0x0088	; 0x800088 <__TEXT_REGION_LENGTH__+0x7f8088>
- 2c2:	90 91 89 00 	lds	r25, 0x0089	; 0x800089 <__TEXT_REGION_LENGTH__+0x7f8089>
- 2c6:	90 93 8b 00 	sts	0x008B, r25	; 0x80008b <__TEXT_REGION_LENGTH__+0x7f808b>
- 2ca:	80 93 8a 00 	sts	0x008A, r24	; 0x80008a <__TEXT_REGION_LENGTH__+0x7f808a>
- 2ce:	08 95       	ret
+void setPWM3_manual(uint8_t dutyValor)
+{
+	// duty a 0–255
+	pwm3_duty = dutyValor;
+ 2ae:	80 93 01 01 	sts	0x0101, r24	; 0x800101 <pwm3_duty>
+ 2b2:	08 95       	ret
 
-000002d0 <__vector_11>:
+000002b4 <__vector_11>:
 }
 
-ISR(TIMER1_COMPA_vect) { PORTB |= (1 << PB1); } // Encender LED
- 2d0:	1f 92       	push	r1
- 2d2:	0f 92       	push	r0
- 2d4:	0f b6       	in	r0, 0x3f	; 63
- 2d6:	0f 92       	push	r0
- 2d8:	11 24       	eor	r1, r1
- 2da:	8f 93       	push	r24
- 2dc:	85 b1       	in	r24, 0x05	; 5
- 2de:	82 60       	ori	r24, 0x02	; 2
- 2e0:	85 b9       	out	0x05, r24	; 5
- 2e2:	8f 91       	pop	r24
- 2e4:	0f 90       	pop	r0
- 2e6:	0f be       	out	0x3f, r0	; 63
- 2e8:	0f 90       	pop	r0
- 2ea:	1f 90       	pop	r1
- 2ec:	18 95       	reti
+//se llama cada vez que TCNT1 == OCR1A
+ISR(TIMER1_COMPA_vect)
+{
+ 2b4:	1f 92       	push	r1
+ 2b6:	0f 92       	push	r0
+ 2b8:	0f b6       	in	r0, 0x3f	; 63
+ 2ba:	0f 92       	push	r0
+ 2bc:	11 24       	eor	r1, r1
+ 2be:	8f 93       	push	r24
+ 2c0:	9f 93       	push	r25
+	// Incrementa ciclo de software (0–255)
+	pwm3_counter++;
+ 2c2:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <pwm3_counter>
+ 2c6:	8f 5f       	subi	r24, 0xFF	; 255
+ 2c8:	80 93 02 01 	sts	0x0102, r24	; 0x800102 <pwm3_counter>
+	// Comienza en 0 y cada vez que es 0 se enciende
+	if (pwm3_counter == 0) {
+ 2cc:	80 91 02 01 	lds	r24, 0x0102	; 0x800102 <pwm3_counter>
+ 2d0:	81 11       	cpse	r24, r1
+ 2d2:	04 c0       	rjmp	.+8      	; 0x2dc <__vector_11+0x28>
+		PORTB |= (1 << PB1);
+ 2d4:	85 b1       	in	r24, 0x05	; 5
+ 2d6:	82 60       	ori	r24, 0x02	; 2
+ 2d8:	85 b9       	out	0x05, r24	; 5
+ 2da:	09 c0       	rjmp	.+18     	; 0x2ee <__vector_11+0x3a>
+	}
+	// Si alcanza el valor de la señal, apaga el LED
+	else if (pwm3_counter == pwm3_duty) {
+ 2dc:	90 91 02 01 	lds	r25, 0x0102	; 0x800102 <pwm3_counter>
+ 2e0:	80 91 01 01 	lds	r24, 0x0101	; 0x800101 <pwm3_duty>
+ 2e4:	98 13       	cpse	r25, r24
+ 2e6:	03 c0       	rjmp	.+6      	; 0x2ee <__vector_11+0x3a>
+		PORTB &= ~(1 << PB1);
+ 2e8:	85 b1       	in	r24, 0x05	; 5
+ 2ea:	8d 7f       	andi	r24, 0xFD	; 253
+ 2ec:	85 b9       	out	0x05, r24	; 5
+	}
+}
+ 2ee:	9f 91       	pop	r25
+ 2f0:	8f 91       	pop	r24
+ 2f2:	0f 90       	pop	r0
+ 2f4:	0f be       	out	0x3f, r0	; 63
+ 2f6:	0f 90       	pop	r0
+ 2f8:	1f 90       	pop	r1
+ 2fa:	18 95       	reti
 
-000002ee <__vector_12>:
-ISR(TIMER1_COMPB_vect) { PORTB &= ~(1 << PB1); } // Apagar LED
- 2ee:	1f 92       	push	r1
- 2f0:	0f 92       	push	r0
- 2f2:	0f b6       	in	r0, 0x3f	; 63
- 2f4:	0f 92       	push	r0
- 2f6:	11 24       	eor	r1, r1
- 2f8:	8f 93       	push	r24
- 2fa:	85 b1       	in	r24, 0x05	; 5
- 2fc:	8d 7f       	andi	r24, 0xFD	; 253
- 2fe:	85 b9       	out	0x05, r24	; 5
- 300:	8f 91       	pop	r24
- 302:	0f 90       	pop	r0
- 304:	0f be       	out	0x3f, r0	; 63
- 306:	0f 90       	pop	r0
- 308:	1f 90       	pop	r1
- 30a:	18 95       	reti
-
-0000030c <initPWMFastA>:
+000002fc <initPWMFastA>:
  *  Author: samur
  */ 
 #include "PWM.h"
 
 void initPWMFastA(uint8_t invertido, uint16_t prescaler) {
 	DDRD |= (1 << PORTD6); // PD6 como salida PWM
- 30c:	9a b1       	in	r25, 0x0a	; 10
- 30e:	90 64       	ori	r25, 0x40	; 64
- 310:	9a b9       	out	0x0a, r25	; 10
+ 2fc:	9a b1       	in	r25, 0x0a	; 10
+ 2fe:	90 64       	ori	r25, 0x40	; 64
+ 300:	9a b9       	out	0x0a, r25	; 10
 	
-	// Modo Fast PWM (TOP = 0xFF)
+	// Modo Fast PWM
 	TCCR0A |= (1 << WGM01) | (1 << WGM00);
- 312:	94 b5       	in	r25, 0x24	; 36
- 314:	93 60       	ori	r25, 0x03	; 3
- 316:	94 bd       	out	0x24, r25	; 36
+ 302:	94 b5       	in	r25, 0x24	; 36
+ 304:	93 60       	ori	r25, 0x03	; 3
+ 306:	94 bd       	out	0x24, r25	; 36
 	
 	// Salida no invertida
 	if (invertido == invert) {
- 318:	81 30       	cpi	r24, 0x01	; 1
- 31a:	21 f4       	brne	.+8      	; 0x324 <initPWMFastA+0x18>
+ 308:	81 30       	cpi	r24, 0x01	; 1
+ 30a:	21 f4       	brne	.+8      	; 0x314 <initPWMFastA+0x18>
 		TCCR0A |= (1 << COM0A1) | (1 << COM0A0);
- 31c:	84 b5       	in	r24, 0x24	; 36
- 31e:	80 6c       	ori	r24, 0xC0	; 192
- 320:	84 bd       	out	0x24, r24	; 36
- 322:	03 c0       	rjmp	.+6      	; 0x32a <initPWMFastA+0x1e>
+ 30c:	84 b5       	in	r24, 0x24	; 36
+ 30e:	80 6c       	ori	r24, 0xC0	; 192
+ 310:	84 bd       	out	0x24, r24	; 36
+ 312:	03 c0       	rjmp	.+6      	; 0x31a <initPWMFastA+0x1e>
 		} else {
 		TCCR0A |= (1 << COM0A1);
- 324:	84 b5       	in	r24, 0x24	; 36
- 326:	80 68       	ori	r24, 0x80	; 128
- 328:	84 bd       	out	0x24, r24	; 36
+ 314:	84 b5       	in	r24, 0x24	; 36
+ 316:	80 68       	ori	r24, 0x80	; 128
+ 318:	84 bd       	out	0x24, r24	; 36
 	}
 	
-	// Configurar prescaler (1024 para período de ~16ms)
+	// Configurar prescaler
 	TCCR0B &= ~((1 << CS02) | (1 << CS01) | (1 << CS00));
- 32a:	85 b5       	in	r24, 0x25	; 37
- 32c:	88 7f       	andi	r24, 0xF8	; 248
- 32e:	85 bd       	out	0x25, r24	; 37
+ 31a:	85 b5       	in	r24, 0x25	; 37
+ 31c:	88 7f       	andi	r24, 0xF8	; 248
+ 31e:	85 bd       	out	0x25, r24	; 37
 	switch(prescaler) {
- 330:	60 34       	cpi	r22, 0x40	; 64
- 332:	71 05       	cpc	r23, r1
- 334:	c1 f0       	breq	.+48     	; 0x366 <initPWMFastA+0x5a>
- 336:	38 f4       	brcc	.+14     	; 0x346 <initPWMFastA+0x3a>
- 338:	61 30       	cpi	r22, 0x01	; 1
- 33a:	71 05       	cpc	r23, r1
- 33c:	61 f0       	breq	.+24     	; 0x356 <initPWMFastA+0x4a>
- 33e:	68 30       	cpi	r22, 0x08	; 8
- 340:	71 05       	cpc	r23, r1
- 342:	69 f0       	breq	.+26     	; 0x35e <initPWMFastA+0x52>
- 344:	1c c0       	rjmp	.+56     	; 0x37e <initPWMFastA+0x72>
- 346:	61 15       	cp	r22, r1
- 348:	81 e0       	ldi	r24, 0x01	; 1
- 34a:	78 07       	cpc	r23, r24
- 34c:	81 f0       	breq	.+32     	; 0x36e <initPWMFastA+0x62>
- 34e:	61 15       	cp	r22, r1
- 350:	74 40       	sbci	r23, 0x04	; 4
- 352:	89 f0       	breq	.+34     	; 0x376 <initPWMFastA+0x6a>
- 354:	14 c0       	rjmp	.+40     	; 0x37e <initPWMFastA+0x72>
+ 320:	60 34       	cpi	r22, 0x40	; 64
+ 322:	71 05       	cpc	r23, r1
+ 324:	c1 f0       	breq	.+48     	; 0x356 <initPWMFastA+0x5a>
+ 326:	38 f4       	brcc	.+14     	; 0x336 <initPWMFastA+0x3a>
+ 328:	61 30       	cpi	r22, 0x01	; 1
+ 32a:	71 05       	cpc	r23, r1
+ 32c:	61 f0       	breq	.+24     	; 0x346 <initPWMFastA+0x4a>
+ 32e:	68 30       	cpi	r22, 0x08	; 8
+ 330:	71 05       	cpc	r23, r1
+ 332:	69 f0       	breq	.+26     	; 0x34e <initPWMFastA+0x52>
+ 334:	1c c0       	rjmp	.+56     	; 0x36e <initPWMFastA+0x72>
+ 336:	61 15       	cp	r22, r1
+ 338:	81 e0       	ldi	r24, 0x01	; 1
+ 33a:	78 07       	cpc	r23, r24
+ 33c:	81 f0       	breq	.+32     	; 0x35e <initPWMFastA+0x62>
+ 33e:	61 15       	cp	r22, r1
+ 340:	74 40       	sbci	r23, 0x04	; 4
+ 342:	89 f0       	breq	.+34     	; 0x366 <initPWMFastA+0x6a>
+ 344:	14 c0       	rjmp	.+40     	; 0x36e <initPWMFastA+0x72>
 		case 1:    TCCR0B |= (1 << CS00); break;
+ 346:	85 b5       	in	r24, 0x25	; 37
+ 348:	81 60       	ori	r24, 0x01	; 1
+ 34a:	85 bd       	out	0x25, r24	; 37
+ 34c:	08 95       	ret
+		case 8:    TCCR0B |= (1 << CS01); break;
+ 34e:	85 b5       	in	r24, 0x25	; 37
+ 350:	82 60       	ori	r24, 0x02	; 2
+ 352:	85 bd       	out	0x25, r24	; 37
+ 354:	08 95       	ret
+		case 64:   TCCR0B |= (1 << CS01) | (1 << CS00); break;
  356:	85 b5       	in	r24, 0x25	; 37
- 358:	81 60       	ori	r24, 0x01	; 1
+ 358:	83 60       	ori	r24, 0x03	; 3
  35a:	85 bd       	out	0x25, r24	; 37
  35c:	08 95       	ret
-		case 8:    TCCR0B |= (1 << CS01); break;
+		case 256:  TCCR0B |= (1 << CS02); break;
  35e:	85 b5       	in	r24, 0x25	; 37
- 360:	82 60       	ori	r24, 0x02	; 2
+ 360:	84 60       	ori	r24, 0x04	; 4
  362:	85 bd       	out	0x25, r24	; 37
  364:	08 95       	ret
-		case 64:   TCCR0B |= (1 << CS01) | (1 << CS00); break;
+		case 1024: TCCR0B |= (1 << CS02) | (1 << CS00); break;
  366:	85 b5       	in	r24, 0x25	; 37
- 368:	83 60       	ori	r24, 0x03	; 3
+ 368:	85 60       	ori	r24, 0x05	; 5
  36a:	85 bd       	out	0x25, r24	; 37
  36c:	08 95       	ret
-		case 256:  TCCR0B |= (1 << CS02); break;
+		default:   TCCR0B |= (1 << CS02) | (1 << CS00); break;
  36e:	85 b5       	in	r24, 0x25	; 37
- 370:	84 60       	ori	r24, 0x04	; 4
+ 370:	85 60       	ori	r24, 0x05	; 5
  372:	85 bd       	out	0x25, r24	; 37
  374:	08 95       	ret
-		case 1024: TCCR0B |= (1 << CS02) | (1 << CS00); break;
- 376:	85 b5       	in	r24, 0x25	; 37
- 378:	85 60       	ori	r24, 0x05	; 5
- 37a:	85 bd       	out	0x25, r24	; 37
- 37c:	08 95       	ret
-		default:   TCCR0B |= (1 << CS02) | (1 << CS00); break;
- 37e:	85 b5       	in	r24, 0x25	; 37
- 380:	85 60       	ori	r24, 0x05	; 5
- 382:	85 bd       	out	0x25, r24	; 37
- 384:	08 95       	ret
 
-00000386 <updateDutyCycle>:
+00000376 <updateDutyCycle>:
 	}
 }
 
 void updateDutyCycle(uint8_t ticks) {
-	OCR0A = ticks; // Ciclo de trabajo (0-255)
- 386:	87 bd       	out	0x27, r24	; 39
- 388:	08 95       	ret
+	OCR0A = ticks; // Ciclo de trabajo
+ 376:	87 bd       	out	0x27, r24	; 39
+ 378:	08 95       	ret
 
-0000038a <__umulhisi3>:
- 38a:	a2 9f       	mul	r26, r18
- 38c:	b0 01       	movw	r22, r0
- 38e:	b3 9f       	mul	r27, r19
- 390:	c0 01       	movw	r24, r0
- 392:	a3 9f       	mul	r26, r19
- 394:	70 0d       	add	r23, r0
- 396:	81 1d       	adc	r24, r1
- 398:	11 24       	eor	r1, r1
- 39a:	91 1d       	adc	r25, r1
- 39c:	b2 9f       	mul	r27, r18
- 39e:	70 0d       	add	r23, r0
- 3a0:	81 1d       	adc	r24, r1
- 3a2:	11 24       	eor	r1, r1
- 3a4:	91 1d       	adc	r25, r1
- 3a6:	08 95       	ret
+0000037a <__umulhisi3>:
+ 37a:	a2 9f       	mul	r26, r18
+ 37c:	b0 01       	movw	r22, r0
+ 37e:	b3 9f       	mul	r27, r19
+ 380:	c0 01       	movw	r24, r0
+ 382:	a3 9f       	mul	r26, r19
+ 384:	70 0d       	add	r23, r0
+ 386:	81 1d       	adc	r24, r1
+ 388:	11 24       	eor	r1, r1
+ 38a:	91 1d       	adc	r25, r1
+ 38c:	b2 9f       	mul	r27, r18
+ 38e:	70 0d       	add	r23, r0
+ 390:	81 1d       	adc	r24, r1
+ 392:	11 24       	eor	r1, r1
+ 394:	91 1d       	adc	r25, r1
+ 396:	08 95       	ret
 
-000003a8 <_exit>:
- 3a8:	f8 94       	cli
+00000398 <_exit>:
+ 398:	f8 94       	cli
 
-000003aa <__stop_program>:
- 3aa:	ff cf       	rjmp	.-2      	; 0x3aa <__stop_program>
+0000039a <__stop_program>:
+ 39a:	ff cf       	rjmp	.-2      	; 0x39a <__stop_program>
