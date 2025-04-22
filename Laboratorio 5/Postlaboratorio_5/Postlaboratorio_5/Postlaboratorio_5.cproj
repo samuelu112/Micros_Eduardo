@@ -12,9 +12,9 @@
     <OutputFileName>$(MSBuildProjectName)</OutputFileName>
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
-    <AssemblyName>Prelaboratorio 5</AssemblyName>
-    <Name>Prelaboratorio 5</Name>
-    <RootNamespace>Prelaboratorio 5</RootNamespace>
+    <AssemblyName>Postlaboratorio_5</AssemblyName>
+    <Name>Postlaboratorio_5</Name>
+    <RootNamespace>Postlaboratorio_5</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
@@ -40,19 +40,6 @@
         </dependencies>
       </framework-data>
     </AsfFrameworkConfig>
-    <avrtool>com.atmel.avrdbg.tool.simulator</avrtool>
-    <avrtoolserialnumber />
-    <avrdeviceexpectedsignature>0x1E950F</avrdeviceexpectedsignature>
-    <com_atmel_avrdbg_tool_simulator>
-      <ToolOptions xmlns="">
-        <InterfaceProperties>
-        </InterfaceProperties>
-      </ToolOptions>
-      <ToolType xmlns="">com.atmel.avrdbg.tool.simulator</ToolType>
-      <ToolNumber xmlns="">
-      </ToolNumber>
-      <ToolName xmlns="">Simulator</ToolName>
-    </com_atmel_avrdbg_tool_simulator>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
@@ -142,6 +129,12 @@
     <Compile Include="PWM2\PWM2.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="PWM3\PWM3.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="PWM3\PWM3.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="PWM\PWM.c">
       <SubType>compile</SubType>
     </Compile>
@@ -150,6 +143,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="PWM3" />
     <Folder Include="PWM2" />
     <Folder Include="PWM" />
   </ItemGroup>
