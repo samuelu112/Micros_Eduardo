@@ -1,0 +1,182 @@
+
+Prelab6.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  00000148  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000000f4  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .comment      00000030  00000000  00000000  00000148  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000178  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000040  00000000  00000000  000001b8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000734  00000000  00000000  000001f8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000684  00000000  00000000  0000092c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000279  00000000  00000000  00000fb0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000074  00000000  00000000  0000122c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000393  00000000  00000000  000012a0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    0000005b  00000000  00000000  00001633  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000030  00000000  00000000  0000168e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   8:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  10:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  14:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  18:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  1c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  20:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  24:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  28:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  2c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  30:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  34:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  38:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  3c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  40:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  44:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  48:	0c 94 69 00 	jmp	0xd2	; 0xd2 <__vector_18>
+  4c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  50:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  54:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  58:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  5c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  60:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  64:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d8 e0       	ldi	r29, 0x08	; 8
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+  74:	0e 94 63 00 	call	0xc6	; 0xc6 <main>
+  78:	0c 94 78 00 	jmp	0xf0	; 0xf0 <_exit>
+
+0000007c <__bad_interrupt>:
+  7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000080 <initUAT>:
+	sei();
+}
+
+// Inicialización del módulo USART
+void initUAT() {
+	DDRD |= (1 << DDD1);   // PD1 (TX) como salida
+  80:	8a b1       	in	r24, 0x0a	; 10
+  82:	82 60       	ori	r24, 0x02	; 2
+  84:	8a b9       	out	0x0a, r24	; 10
+	DDRD &= ~(1 << DDD0);  // PD0 (RX) como entrada
+  86:	8a b1       	in	r24, 0x0a	; 10
+  88:	8e 7f       	andi	r24, 0xFE	; 254
+  8a:	8a b9       	out	0x0a, r24	; 10
+
+	UCSR0A = 0;            // Modo normal (sin doble velocidad)
+  8c:	10 92 c0 00 	sts	0x00C0, r1	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7f80c0>
+	UCSR0B = (1 << RXCIE0) | (1 << RXEN0) | (1 << TXEN0); // Habilita interrupciones, TX y RX
+  90:	88 e9       	ldi	r24, 0x98	; 152
+  92:	80 93 c1 00 	sts	0x00C1, r24	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7f80c1>
+	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00); // 8 bits de datos, 1 bit de parada
+  96:	86 e0       	ldi	r24, 0x06	; 6
+  98:	80 93 c2 00 	sts	0x00C2, r24	; 0x8000c2 <__TEXT_REGION_LENGTH__+0x7f80c2>
+
+	UBRR0 = 103;           // Baud rate 9600 @ 16 MHz (F_CPU = 16MHz)
+  9c:	87 e6       	ldi	r24, 0x67	; 103
+  9e:	90 e0       	ldi	r25, 0x00	; 0
+  a0:	90 93 c5 00 	sts	0x00C5, r25	; 0x8000c5 <__TEXT_REGION_LENGTH__+0x7f80c5>
+  a4:	80 93 c4 00 	sts	0x00C4, r24	; 0x8000c4 <__TEXT_REGION_LENGTH__+0x7f80c4>
+  a8:	08 95       	ret
+
+000000aa <setup>:
+    {
+    }
+}
+
+void setup(){
+	cli();
+  aa:	f8 94       	cli
+	DDRB = 0XFF;
+  ac:	8f ef       	ldi	r24, 0xFF	; 255
+  ae:	84 b9       	out	0x04, r24	; 4
+	//Se decide el Baud rate
+	//9600
+	//Modo asincrono
+	//En doble speed con prescaler 1
+	//UBRR en 103
+	initUAT();
+  b0:	0e 94 40 00 	call	0x80	; 0x80 <initUAT>
+	sei();
+  b4:	78 94       	sei
+  b6:	08 95       	ret
+
+000000b8 <writeChar>:
+	UBRR0 = 103;           // Baud rate 9600 @ 16 MHz (F_CPU = 16MHz)
+}
+
+// Envía un carácter por USART
+void writeChar(char caracter) {
+	while (!(UCSR0A & (1 << UDRE0))); // Espera hasta que el buffer TX esté listo
+  b8:	90 91 c0 00 	lds	r25, 0x00C0	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7f80c0>
+  bc:	95 ff       	sbrs	r25, 5
+  be:	fc cf       	rjmp	.-8      	; 0xb8 <writeChar>
+	UDR0 = caracter;                   // Escribe el carácter en el buffer
+  c0:	80 93 c6 00 	sts	0x00C6, r24	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7f80c6>
+  c4:	08 95       	ret
+
+000000c6 <main>:
+void initUAT(void);
+void writeChar(char);
+
+int main(void)
+{
+	setup();
+  c6:	0e 94 55 00 	call	0xaa	; 0xaa <setup>
+	writeChar('H');
+  ca:	88 e4       	ldi	r24, 0x48	; 72
+  cc:	0e 94 5c 00 	call	0xb8	; 0xb8 <writeChar>
+  d0:	ff cf       	rjmp	.-2      	; 0xd0 <main+0xa>
+
+000000d2 <__vector_18>:
+	while (!(UCSR0A & (1 << UDRE0))); // Espera hasta que el buffer TX esté listo
+	UDR0 = caracter;                   // Escribe el carácter en el buffer
+}
+
+// Interrupción de recepción USART
+ISR(USART_RX_vect) {
+  d2:	1f 92       	push	r1
+  d4:	0f 92       	push	r0
+  d6:	0f b6       	in	r0, 0x3f	; 63
+  d8:	0f 92       	push	r0
+  da:	11 24       	eor	r1, r1
+  dc:	8f 93       	push	r24
+	char recibido = UDR0;  // Lee el carácter recibido
+  de:	80 91 c6 00 	lds	r24, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7f80c6>
+	PORTB = recibido;      // Muestra el carácter en el Puerto B
+  e2:	85 b9       	out	0x05, r24	; 5
+  e4:	8f 91       	pop	r24
+  e6:	0f 90       	pop	r0
+  e8:	0f be       	out	0x3f, r0	; 63
+  ea:	0f 90       	pop	r0
+  ec:	1f 90       	pop	r1
+  ee:	18 95       	reti
+
+000000f0 <_exit>:
+  f0:	f8 94       	cli
+
+000000f2 <__stop_program>:
+  f2:	ff cf       	rjmp	.-2      	; 0xf2 <__stop_program>
