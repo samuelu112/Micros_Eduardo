@@ -86,7 +86,7 @@ void initUAT() {
   88:	8e 7f       	andi	r24, 0xFE	; 254
   8a:	8a b9       	out	0x0a, r24	; 10
 
-	UCSR0A = 0;            // Modo normal (sin doble velocidad)
+	UCSR0A = 0;            // Modo normal
   8c:	10 92 c0 00 	sts	0x00C0, r1	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7f80c0>
 	UCSR0B = (1 << RXCIE0) | (1 << RXEN0) | (1 << TXEN0); // Habilita interrupciones, TX y RX
   90:	88 e9       	ldi	r24, 0x98	; 152
@@ -95,7 +95,7 @@ void initUAT() {
   96:	86 e0       	ldi	r24, 0x06	; 6
   98:	80 93 c2 00 	sts	0x00C2, r24	; 0x8000c2 <__TEXT_REGION_LENGTH__+0x7f80c2>
 
-	UBRR0 = 103;           // Baud rate 9600 @ 16 MHz (F_CPU = 16MHz)
+	UBRR0 = 103;           // Baud rate 9600 F_CPU = 16MHz
   9c:	87 e6       	ldi	r24, 0x67	; 103
   9e:	90 e0       	ldi	r25, 0x00	; 0
   a0:	90 93 c5 00 	sts	0x00C5, r25	; 0x8000c5 <__TEXT_REGION_LENGTH__+0x7f80c5>
@@ -125,7 +125,7 @@ void setup(){
   b6:	08 95       	ret
 
 000000b8 <writeChar>:
-	UBRR0 = 103;           // Baud rate 9600 @ 16 MHz (F_CPU = 16MHz)
+	UBRR0 = 103;           // Baud rate 9600 F_CPU = 16MHz
 }
 
 // Envía un carácter por USART
