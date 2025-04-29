@@ -99,3 +99,4 @@ void writeChar(char c) {
 void writeString(const char* s) {
     for(uint8_t i=0; s[i]!='\0'; i++) writeChar(s[i]);
 }
+
