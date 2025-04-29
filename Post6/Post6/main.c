@@ -4,7 +4,6 @@
  * Created: 28/04/2025 09:01:15
  * Author : Eduardo Urbina
  * Postlaboratorio 6 
- *Lectura de pot y ascii
  */ 
 
 #include <avr/io.h>
@@ -101,4 +100,6 @@ void writeChar(char c) {
 void writeString(const char* s) {
     for(uint8_t i=0; s[i]!='\0'; i++) writeChar(s[i]);
 }
+
+
 
