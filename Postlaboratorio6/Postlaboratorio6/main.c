@@ -2,7 +2,8 @@
  * Postlaboratorio6.c
  *
  * Created: 28/04/2025 09:01:15
- * Author : samur
+ * Author : Eduardo Urbina
+ * Postlaboratorio 6
  */ 
 
 #include <avr/io.h>
