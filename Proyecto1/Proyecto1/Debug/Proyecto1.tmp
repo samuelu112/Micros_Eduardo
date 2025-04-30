@@ -1,0 +1,134 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega328P"</DEVICE>
+ <WORKING_DIR>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc</FILE>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\M328PDEF.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\Debug\Proyecto1.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Proyecto1.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Proyecto1.map</FILE>
+  <FILE>Proyecto1.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <START><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>33</LINE></START>
+  <ISR_PCINT1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>766</LINE></ISR_PCINT1>
+  <TMR0><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>855</LINE></TMR0>
+  <TMR2><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>847</LINE></TMR2>
+  <TABLA7SEG><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>30</LINE></TABLA7SEG>
+  <INIT_TMR0><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>750</LINE></INIT_TMR0>
+  <INIT_TMR2><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>757</LINE></INIT_TMR2>
+  <LOOP><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>121</LINE></LOOP>
+  <RELOJ1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>152</LINE></RELOJ1>
+  <FECHA1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>148</LINE></FECHA1>
+  <CONHORA><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>159</LINE></CONHORA>
+  <CONFECHA1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>146</LINE></CONFECHA1>
+  <ALARMA1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>150</LINE></ALARMA1>
+  <ACTIVAR_ALARMA1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>154</LINE></ACTIVAR_ALARMA1>
+  <CONTADOR0><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>138</LINE></CONTADOR0>
+  <CONFECHA><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>421</LINE></CONFECHA>
+  <FECHA><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>342</LINE></FECHA>
+  <ALARMA><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>575</LINE></ALARMA>
+  <RELOJ><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>264</LINE></RELOJ>
+  <ACTIVAR_ALARMA><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>725</LINE></ACTIVAR_ALARMA>
+  <APAGARA><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>156</LINE></APAGARA>
+  <MIN59><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>195</LINE></MIN59>
+  <HOR24><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>214</LINE></HOR24>
+  <CON24HORAS><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>245</LINE></CON24HORAS>
+  <LR5><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>241</LINE></LR5>
+  <MINDECENAS><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>186</LINE></MINDECENAS>
+  <LR4><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>237</LINE></LR4>
+  <LR3><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>233</LINE></LR3>
+  <COMPROBAR><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>253</LINE></COMPROBAR>
+  <MINMAX><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>203</LINE></MINMAX>
+  <PONER59><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>208</LINE></PONER59>
+  <PONER24><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>222</LINE></PONER24>
+  <PONER23><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>227</LINE></PONER23>
+  <REG6><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>250</LINE></REG6>
+  <D1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>298</LINE></D1>
+  <D2><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>309</LINE></D2>
+  <D3><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>320</LINE></D3>
+  <D4><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>331</LINE></D4>
+  <SEGUIR2><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>284</LINE></SEGUIR2>
+  <SEGUIR1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>282</LINE></SEGUIR1>
+  <SEGUIR4><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>362</LINE></SEGUIR4>
+  <SEGUIR3><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>360</LINE></SEGUIR3>
+  <COMPROBAR3><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>366</LINE></COMPROBAR3>
+  <FD1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>377</LINE></FD1>
+  <FD2><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>388</LINE></FD2>
+  <FD3><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>399</LINE></FD3>
+  <FD4><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>410</LINE></FD4>
+  <SEPTIEMBRE><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>484</LINE></SEPTIEMBRE>
+  <ENERO><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>480</LINE></ENERO>
+  <DICIEMBREC><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>494</LINE></DICIEMBREC>
+  <OCTUBRE><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>490</LINE></OCTUBRE>
+  <PONERA101><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>498</LINE></PONERA101>
+  <VERMES><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>506</LINE></VERMES>
+  <ESFEBRERO><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>500</LINE></ESFEBRERO>
+  <VERMES1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>474</LINE></VERMES1>
+  <COMPROBAR31><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>532</LINE></COMPROBAR31>
+  <MESDE30DIAS><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>502</LINE></MESDE30DIAS>
+  <ABRILREINICIO><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>504</LINE></ABRILREINICIO>
+  <IRA><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>510</LINE></IRA>
+  <PONERA10><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>560</LINE></PONERA10>
+  <ESFEBRERO1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>564</LINE></ESFEBRERO1>
+  <MESDE30DIAS1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>545</LINE></MESDE30DIAS1>
+  <ABRILREINICIO1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>555</LINE></ABRILREINICIO1>
+  <MENOSR15><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>540</LINE></MENOSR15>
+  <FEB><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>526</LINE></FEB>
+  <ABR><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>534</LINE></ABR>
+  <AMIN59><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>611</LINE></AMIN59>
+  <AHOR24><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>631</LINE></AHOR24>
+  <ACON24HORAS><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>662</LINE></ACON24HORAS>
+  <ALR5><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>658</LINE></ALR5>
+  <AMINDECENAS><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>602</LINE></AMINDECENAS>
+  <ALR4><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>654</LINE></ALR4>
+  <ALR3><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>650</LINE></ALR3>
+  <COMPROBAR2><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>670</LINE></COMPROBAR2>
+  <AMINMAX><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>619</LINE></AMINMAX>
+  <APONER59><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>624</LINE></APONER59>
+  <APONER24><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>639</LINE></APONER24>
+  <APONER23><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>644</LINE></APONER23>
+  <AREG6><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>667</LINE></AREG6>
+  <DA1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>681</LINE></DA1>
+  <DA2><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>692</LINE></DA2>
+  <DA3><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>703</LINE></DA3>
+  <DA4><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>714</LINE></DA4>
+  <REINICIAR21><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>742</LINE></REINICIAR21>
+  <REINICIARA1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>745</LINE></REINICIARA1>
+  <PONERB0><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>738</LINE></PONERB0>
+  <VERHORA><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>785</LINE></VERHORA>
+  <VERFECHA><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>789</LINE></VERFECHA>
+  <PHORA><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>794</LINE></PHORA>
+  <PFECHA><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>806</LINE></PFECHA>
+  <PALARMA><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>819</LINE></PALARMA>
+  <PACALARMA><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>833</LINE></PACALARMA>
+  <REINICIO1><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>895</LINE></REINICIO1>
+  <UNIMINUTOS><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>863</LINE></UNIMINUTOS>
+  <MINUTOS><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>870</LINE></MINUTOS>
+  <RES><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>876</LINE></RES>
+  <HORAS><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>882</LINE></HORAS>
+  <L24HORAS><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>897</LINE></L24HORAS>
+  <REINICIO><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>947</LINE></REINICIO>
+  <FEBRERO><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>949</LINE></FEBRERO>
+  <ABRIL><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>965</LINE></ABRIL>
+  <MESES31><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>927</LINE></MESES31>
+  <SFEB><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>940</LINE></SFEB>
+  <DICIEMBRE><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>985</LINE></DICIEMBRE>
+  <MES><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>981</LINE></MES>
+  <FEB28><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>954</LINE></FEB28>
+  <AVIEJO><FILE>C:\Users\samur\OneDrive - UVG\Escritorio\Micros\Micros_Eduardo\Proyecto1\Proyecto1\main.asm</FILE><LINE>970</LINE></AVIEJO>
+ </LABELS>
+</ASSEMBLER_INFO>
