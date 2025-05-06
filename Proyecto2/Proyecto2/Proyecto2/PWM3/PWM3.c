@@ -6,48 +6,41 @@
  */ 
 #include "PWM3.h"
 
-// Contador
-static volatile uint8_t pwm3_counter = 0;
-// Señal
-static volatile uint8_t pwm3_duty    = 0;
+void initPWMFastB_T1(uint8_t inv, uint16_t presc) {
+	// 1) Pin PB2 (OC1B) como salida
+	DDRB |= (1 << DDB2);
 
-void initPWM3_manual(uint16_t top, uint8_t prescalerBits)
-{
-	// Configura PB1 como salida del LED
-	DDRB |= (1 << DDB1);
-
-	// Modo CTC: WGM13:0 = 0100, WGM12 = 1
+	// 2) Limpiar registros antes de configurar todo
 	TCCR1A = 0;
-	TCCR1B = (1 << WGM12) | prescalerBits;
+	TCCR1B = 0;
 
-	// Fija TOP en OCR1A = periodo de interrupción
-	OCR1A = top;
+	// 3) Modo Fast PWM con ICR1 como TOP (modo 14)
+	TCCR1A |= (1 << WGM11);
+	TCCR1B |= (1 << WGM13) | (1 << WGM12);
 
-	// Habilita interrupción Compare Match A
-	TIMSK1 = (1 << OCIE1A);
-
-	// Inicializa el contador de software
-	pwm3_counter = 0;
-	pwm3_duty    = 0;
-}
-
-void setPWM3_manual(uint8_t dutyValor)
-{
-	// duty a 0–255
-	pwm3_duty = dutyValor;
-}
-
-//se llama cada vez que TCNT1 == OCR1A
-ISR(TIMER1_COMPA_vect)
-{
-	// Incrementa ciclo de software (0–255)
-	pwm3_counter++;
-	// Comienza en 0 y cada vez que es 0 se enciende
-	if (pwm3_counter == 0) {
-		PORTB |= (1 << PB1);
+	// 4) Configurar salida no invertida o invertida en OC1B
+	if (inv == invert) {
+		TCCR1A |= (1 << COM1B1) | (1 << COM1B0);
+		} else {
+		TCCR1A |= (1 << COM1B1);
+		TCCR1A &= ~(1 << COM1B0);
 	}
-	// Si alcanza el valor de la señal, apaga el LED
-	else if (pwm3_counter == pwm3_duty) {
-		PORTB &= ~(1 << PB1);
+
+	// 5) Prescaler (ejemplo presc=8 para 50Hz)
+	switch (presc) {
+		case 1:    TCCR1B |= (1 << CS10); break;
+		case 8:    TCCR1B |= (1 << CS11); break;
+		case 64:   TCCR1B |= (1 << CS11) | (1 << CS10); break;
+		case 256:  TCCR1B |= (1 << CS12); break;
+		case 1024: TCCR1B |= (1 << CS12) | (1 << CS10); break;
+		default:   TCCR1B |= (1 << CS11); break; // default 8
 	}
+
+	// 6) TOP para 20ms (50Hz): ICR1 = F_CPU/prescaler/50Hz - 1 = 16MHz/8/50 -1 = 39999
+	ICR1 = 39999;
 }
+
+void updateDutyCycle3(uint16_t ticks) {
+	OCR1B = ticks;
+}
+

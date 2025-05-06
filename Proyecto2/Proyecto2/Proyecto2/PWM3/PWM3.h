@@ -8,11 +8,9 @@
 
 #ifndef PWM3_H_
 #define PWM3_H_
-
 #include <avr/io.h>
-#include <avr/interrupt.h>
-
-void initPWM3_manual(uint16_t top, uint8_t prescalerBits);
-void setPWM3_manual(uint8_t dutyValor);
-
-#endif /* PWM3_H_ */
+#define invert     1
+#define non_invert 0
+void initPWMFastB_T1(uint8_t invertido, uint16_t prescaler);
+void updateDutyCycle3(uint16_t ticks);
+#endif

@@ -4,7 +4,7 @@
  * Created: 30/04/2025 10:09:09
  *  Author: samur
  */ 
-#include "PWM.h"
+#include "PWM1.h"
 
 void initPWMFastA(uint8_t invertido, uint16_t prescaler) {
 	DDRD |= (1 << PORTD6); // PD6 como salida PWM
