@@ -12,8 +12,8 @@
 #include <avr/io.h>
 #include <stdint.h>
 
-#define EEPROM_SIZE 1024
-#define MAX_POSITIONS 4
+#define EEPROM_SIZE    1024
+#define MAX_POSITIONS  4
 
 typedef struct {
 	uint16_t servo1;
@@ -22,10 +22,11 @@ typedef struct {
 	uint16_t servo4;
 } ServoPosition;
 
-void EEPROM_Init();
-void EEPROM_Write(uint16_t address, uint8_t data);
+void EEPROM_Init(void);
 uint8_t EEPROM_Read(uint16_t address);
-void EEPROM_SavePosition(uint8_t pos_index, ServoPosition* pos);
+void EEPROM_Write(uint16_t address, uint8_t data);
+void EEPROM_SavePosition(uint8_t pos_index, const ServoPosition* pos);
 void EEPROM_LoadPosition(uint8_t pos_index, ServoPosition* pos);
 
 #endif
+
